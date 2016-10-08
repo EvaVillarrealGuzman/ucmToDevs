@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: DEVS-TS
+Bundle-SymbolicName: DEVS-TS;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: devs_ts.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-ClassPath: lib/codemodel-2.4.1.jar,
+ lib/timeview.jar,
+ .
+Import-Package: org.junit
+Export-Package: Main
