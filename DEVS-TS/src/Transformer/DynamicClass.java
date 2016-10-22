@@ -1,5 +1,6 @@
 package Transformer;
 
+///modifique en 3 lugares
 import java.util.ArrayList;
 
 import javax.swing.JTree;

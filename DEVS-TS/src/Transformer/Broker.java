@@ -1,9 +1,13 @@
 package Transformer;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.swing.JTree;
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -11,9 +15,9 @@ import com.sun.codemodel.JCodeModel;
 import Transformer.Domain.StartPoint;
 
 public class Broker {
-	JCodeModel codeModel;
-	JTree xmlTree;
-	StartPoint startPoint;
+	private JCodeModel codeModel;
+	private JTree xmlTree;
+	private StartPoint startPoint;
 
 	public void generateSource(String inputPath, String outputPath) throws JClassAlreadyExistsException, IOException {
 		// Instantiate an instance of the JCodeModel class
@@ -50,7 +54,45 @@ public class Broker {
 		dc.createSaViewDEVS(xmlTree, codeModel);
 
 		// This will generate the code in the specified file path.
-		codeModel.build(new File(outputPath));
+		codeModel.build(new File(outputPath+ "/Simulator/src"));
+		
+		//compile class created
+		/* JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+		 
+		 File dirDynamicClass = new File(outputPath + "/Simulator/src/SimEnvironment/SAModel/SystemTemp");
+		
+		 File[] fileNames = dirDynamicClass.listFiles();
+	      for (int i = 0; i < fileNames.length; i++) {
+	    	  System.out.println(compiler.run(null, null, null, fileNames[i].getPath()));
+	      }*/
+	      
+		//Create jar
+		OutputStream output = new FileOutputStream(outputPath + "/simulator.jar");
+		JarUtil.jar(new File(outputPath + "/Simulator/bin"), output,false);
+	}
+
+	public JCodeModel getCodeModel() {
+		return codeModel;
+	}
+
+	public void setCodeModel(JCodeModel codeModel) {
+		this.codeModel = codeModel;
+	}
+
+	public JTree getXmlTree() {
+		return xmlTree;
+	}
+
+	public void setXmlTree(JTree xmlTree) {
+		this.xmlTree = xmlTree;
+	}
+
+	public StartPoint getStartPoint() {
+		return startPoint;
+	}
+
+	public void setStartPoint(StartPoint startPoint) {
+		this.startPoint = startPoint;
 	}
 
 }
