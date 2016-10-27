@@ -1,7 +1,11 @@
 package Main;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -14,7 +18,7 @@ import chequerUCM.Chequer;
 public class TransformerSimulator {
 
 	private double int_arr_t;
-	
+
 	public String callChequerUCM(String path) {
 		Chequer c = new Chequer(path);
 		return c.isValid();
@@ -73,14 +77,21 @@ public class TransformerSimulator {
 			Class[] paramTypesM1 = { double.class, String.class, classEntity };
 			Object[] paramValuesM1 = { 0.0, "sip", classEntity.cast(objectEntity) };
 
-			Method methodS1 = classDSF.getDeclaredMethod("simulate", paramTypesM1);
-			methodS1.invoke(objectDSF, paramValuesM1);
-
 			Class[] paramTypesM2 = { Integer.class };
 			Object[] paramValuesM2 = { 20000 };
 
-			Method methodS2 = classDSF.getDeclaredMethod("simulate", paramTypesM2);
-			methodS2.invoke(objectDSF, paramValuesM2);
+			//TODO preguntar a vero si es a los dos métodos que itero
+			for (int i = 1; i < 11; i++) {
+				Method methodS1 = classDSF.getDeclaredMethod("simulate", paramTypesM1);
+				methodS1.invoke(objectDSF, paramValuesM1);
+
+				Method methodS2 = classDSF.getDeclaredMethod("simulate", paramTypesM2);
+				methodS2.invoke(objectDSF, paramValuesM2);
+
+				copyFile(simEnvironmentPath+"/Run/availability.csv" , simEnvironmentPath+"/Run/Run"+i+"/availability.csv");
+				copyFile(simEnvironmentPath+"/Run/performance.csv" , simEnvironmentPath+"/Run/Run"+i+"/performance.csv");
+				copyFile(simEnvironmentPath+"/Run/reliability.csv" , simEnvironmentPath+"/Run/Run"+i+"/reliability.csv");
+			}
 
 			// El código anterior intenta generar en forma dinámica lo que
 			// sigue:
@@ -96,6 +107,28 @@ public class TransformerSimulator {
 		}
 	}
 
+	private void copyFile(String sourcePath, String destinePath){
+		File source = new File(sourcePath);
+		File destine = new File(destinePath);
+		
+		try {
+		InputStream in = new FileInputStream(source);
+		OutputStream out = new FileOutputStream(destine);
+		
+		byte[] buf = new byte[1024];
+		int len;
+		 
+		while ((len = in.read(buf)) > 0) {
+		  out.write(buf, 0, len);
+		}
+		
+		in.close();
+		out.close();}
+		catch(Exception e){
+			System.err.println(e);
+		}
+	}
+	
 	public double getInt_arr_t() {
 		return int_arr_t;
 	}
@@ -103,5 +136,5 @@ public class TransformerSimulator {
 	public void setInt_arr_t(double int_arr_t) {
 		this.int_arr_t = int_arr_t;
 	}
-	
+
 }

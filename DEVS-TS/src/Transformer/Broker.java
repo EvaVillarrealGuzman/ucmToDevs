@@ -23,23 +23,6 @@ public class Broker {
 
 		Object[] result;
 
-		// Crea primero las clases estáticas
-		/*
-		 * StaticClass stc = new StaticClass(codeModel);
-		 * stc.createFailureClass(); stc.createFailureGeneratorClass();
-		 * stc.createIntervalClass(); stc.createMeasureMsgClass();
-		 * stc.createRequestClass();
-		 * stc.createResponsabilityDEVSClass(stc.getRequestClass());
-		 * stc.createCPXResponsabilityClass(stc.getResponsabilityDEVSClass(),
-		 * stc.getFailureGeneratorClass());
-		 * 
-		 * ExperimentalFrame ef = new ExperimentalFrame(codeModel);
-		 * ef.createSAAvailabilityStatClass(); ef.createSAEAcceptorClass();
-		 * ef.createSAEGeneratorClass(); ef.createSAEExperimentalClass();
-		 * ef.createSAPerformanceStatClass();
-		 * ef.createSARealiabilityStatClass();
-		 */
-
 		/* obtiene el objeto xml que debe crear */
 		ConvertUCM2JTree xmlObject = new ConvertUCM2JTree();
 		result = xmlObject.convertToTree(inputPath);
