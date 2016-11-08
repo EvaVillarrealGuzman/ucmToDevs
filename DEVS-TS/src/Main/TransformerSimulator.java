@@ -97,10 +97,10 @@ public class TransformerSimulator {
 			// fachada.simulate(0, "sip", new entity("start"));
 			// fachada.simulate(2147483647);
 
+			//Este ciclo sirve para sincronizar con la finalización de la simulación
 			while (!isFinished) {
 				File lastFile = new File(simEnvironmentPath + "/Run/Run10/reliability.csv");
-
-				//System.out.println(lastFile.exists());
+				
 				if (lastFile.exists())
 					isFinished = true;
 			}
@@ -113,27 +113,6 @@ public class TransformerSimulator {
 		}
 	}
 
-	private void copyFile(String sourcePath, String destinePath) {
-		File source = new File(sourcePath);
-		File destine = new File(destinePath);
-
-		try {
-			InputStream in = new FileInputStream(source);
-			OutputStream out = new FileOutputStream(destine);
-
-			byte[] buf = new byte[1024];
-			int len;
-
-			while ((len = in.read(buf)) > 0) {
-				out.write(buf, 0, len);
-			}
-
-			in.close();
-			out.close();
-		} catch (Exception e) {
-			System.err.println(e);
-		}
-	}
 
 	public double getInt_arr_t() {
 		return int_arr_t;
