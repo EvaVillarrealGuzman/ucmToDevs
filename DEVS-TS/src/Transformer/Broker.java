@@ -35,14 +35,17 @@ public class Broker {
 		dc.createSaViewDEVS(xmlTree, codeModel);
 
 		// This will generate the code in the specified file path.
-		codeModel.build(new File(outputPath+ "/SimulatorProject/src"));
-		
-		//compile class created
-		ExecuteShellComand.compileCommand(outputPath+ "/SimulatorProject/src");
-	      
-		//Create jar
+		codeModel.build(new File(outputPath + "/Simulator/src"));
+
+		// compile class created
+		ExecuteShellComand.compileCommand(outputPath + "/Simulator/src");
+
+		// Create jar
 		OutputStream output = new FileOutputStream(outputPath + "/simulator.jar");
-		JarUtil.jar(new File(outputPath + "/SimulatorProject/src"), output,false);
+		JarUtil.jar(new File(outputPath + "/Simulator/src"), output, false);
+
+		//Delete files .java created
+		deleteSystemTempClass(outputPath + "/Simulator/src/SimEnvironment/SAModel/SystemTemp");
 	}
 
 	public JCodeModel getCodeModel() {
@@ -67,6 +70,18 @@ public class Broker {
 
 	public void setStartPoint(StartPoint startPoint) {
 		this.startPoint = startPoint;
+	}
+
+	private void deleteSystemTempClass(String path) {
+		File Directory = new File(path);
+
+		String[] fileList;
+		fileList = Directory.list();
+		for (int i = 0; i < fileList.length; i++) {
+			File myFile = new File(Directory, fileList[i]);
+			myFile.delete();
+		}
+
 	}
 
 }
