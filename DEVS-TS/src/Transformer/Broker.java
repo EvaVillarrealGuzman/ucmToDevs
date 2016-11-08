@@ -43,9 +43,6 @@ public class Broker {
 		// Create jar
 		OutputStream output = new FileOutputStream(outputPath + "/simulator.jar");
 		JarUtil.jar(new File(outputPath + "/Simulator/src"), output, false);
-
-		//Delete files .java created
-		deleteSystemTempClass(outputPath + "/Simulator/src/SimEnvironment/SAModel/SystemTemp");
 	}
 
 	public JCodeModel getCodeModel() {
@@ -70,18 +67,6 @@ public class Broker {
 
 	public void setStartPoint(StartPoint startPoint) {
 		this.startPoint = startPoint;
-	}
-
-	private void deleteSystemTempClass(String path) {
-		File Directory = new File(path);
-
-		String[] fileList;
-		fileList = Directory.list();
-		for (int i = 0; i < fileList.length; i++) {
-			File myFile = new File(Directory, fileList[i]);
-			myFile.delete();
-		}
-
 	}
 
 }
