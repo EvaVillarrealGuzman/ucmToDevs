@@ -8,7 +8,7 @@ public class ExecuteShellComand {
 		try {
 			path = path.replace("/", "\\");
 
-			ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"" + path + "\" && javac Test.java");
+			ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "cd \"" + path + "\" && javac -cp . SimEnvironment/SimEnvironment.java");
 
 			builder.redirectErrorStream(true);
 			Process p = builder.start();

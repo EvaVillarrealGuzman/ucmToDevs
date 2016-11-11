@@ -1,7 +1,7 @@
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import Main.TransformerSimulator;
 
@@ -9,51 +9,71 @@ public class Test {
 
 	public static void main(String[] args) {
 
-		TransformerSimulator ts = new TransformerSimulator();
-		ts.callTransformer("C:/Users/Usuario-Pc/git/DEVS-TS/DEVS-TS/src/Test/cs-pf.jucm",
-				"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
+		// Create jar
+		/*try {
+
+			OutputStream output = new FileOutputStream(
+					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/project.jar");
+			JarUtil.jar(new File("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/Simulator/src"),
+					output, false);
+
+		} catch (Exception e) {
+
+		}*/
 
 		/*
-		 * try { Process pro=Runtime.getRuntime().exec("javac *", null, new
-		 * File(
-		 * "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/Simulator/src/SimEnvironment/SAModel/SystemTemp"
-		 * )); System.out.println("asdfs"); } catch (IOException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); }
-		 */
-
-		/*
-		 * try { ArrayList<String> classNames = new ArrayList<String>();
-		 * ZipInputStream zip = new ZipInputStream(new FileInputStream(
+		 * try {
+		 * 
+		 * java.util.jar.JarFile jar; jar = new java.util.jar.JarFile(
 		 * "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/simulator.jar"
-		 * )); for (ZipEntry entry = zip.getNextEntry(); entry != null; entry =
-		 * zip.getNextEntry()) { if (!entry.isDirectory()) { // This ZipEntry
-		 * represents a class. Now, what class does it represent? String
-		 * className = entry.getName().replace('/', '.'); // including ".class"
-		 * classNames.add(className); } }
+		 * );
 		 * 
-		 * for(int i = 0; i < classNames.size(); i++) {
-		 * System.out.println(classNames.get(i)); } }catch(Exception e){
-		 * 
-		 * }
+		 * java.util.Enumeration enumEntries = jar.entries(); while
+		 * (enumEntries.hasMoreElements()) { java.util.jar.JarEntry file =
+		 * (java.util.jar.JarEntry) enumEntries.nextElement(); java.io.File f =
+		 * new java.io.File( "C:/Users/Usuario-Pc/Desktop/Hola" +
+		 * java.io.File.separator + file.getName()); if (file.isDirectory()) {
+		 * // if its a directory, create it f.mkdirs(); continue; }
+		 * java.io.InputStream is = jar.getInputStream(file); // get the //
+		 * input // stream java.io.FileOutputStream fos = new
+		 * java.io.FileOutputStream(f); while (is.available() > 0) { // write
+		 * contents of 'is' to 'fos' fos.write(is.read()); } fos.close();
+		 * is.close(); } } catch (IOException e) { System.out.println(e); }
 		 */
 
-		if (ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000)) {
+		
+		  TransformerSimulator ts = new TransformerSimulator();
+		  ts.callTransformer(
+		  "C:/Users/Usuario-Pc/git/DEVS-TS/DEVS-TS/src/Test/cs-pf.jucm",
+		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
+		 
 
-		/*	File file = new File(
-					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/Simulator/src/SimEnvironment/SAModel/SystemTemp/");
-
-			String[] myFiles;
-			if (file.isDirectory()) {
-				myFiles = file.list();
-				for (int i = 0; i < myFiles.length; i++) {
-					File myFile = new File(file, myFiles[i]);
-					System.out.println(myFile);
-					myFile.delete();
+		try {
+			ArrayList<String> classNames = new ArrayList<String>();
+			ZipInputStream zip = new ZipInputStream(new FileInputStream(
+					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/project.jar"));
+			for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
+				if (!entry.isDirectory()) { // This ZipEntry represents a class.
+											// Now, what class does it
+											// represent? 
+					String className = entry.getName().replace('/', '.'); // including
+																	// ".class"
+					classNames.add(className);
 				}
-			}*/
+			}
 
-			System.out.println("asdfsafasfdasfasfdsafasd");
+			for (int i = 0; i < classNames.size(); i++) {
+				System.out.println(classNames.get(i));
+			}
+		} catch (Exception e) {
+
 		}
+
+		/*
+		 * if (ts.callSimulator(
+		 * "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS",
+		 * 2000)) { System.out.println("asdfsafasfdasfasfdsafasd"); }
+		 */
 
 		// ConvertUCM2JTree xmlObject = new ConvertUCM2JTree();
 		// xmlObject.convertToTree(System.getProperty("user.dir") +
@@ -109,22 +129,6 @@ public class Test {
 		 * } catch (ClassNotFoundException e) { e.printStackTrace(); }
 		 */
 
-	}
-
-	private static void printLines(String cmd, InputStream ins) throws Exception {
-		String line = null;
-		BufferedReader in = new BufferedReader(new InputStreamReader(ins));
-		while ((line = in.readLine()) != null) {
-			System.out.println(cmd + " " + line);
-		}
-	}
-
-	private static void runProcess(String command) throws Exception {
-		Process pro = Runtime.getRuntime().exec(command);
-		printLines(command + " stdout:", pro.getInputStream());
-		printLines(command + " stderr:", pro.getErrorStream());
-		pro.waitFor();
-		System.out.println(command + " exitValue() " + pro.exitValue());
 	}
 
 }
