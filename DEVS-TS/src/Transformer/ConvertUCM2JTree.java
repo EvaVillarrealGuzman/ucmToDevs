@@ -544,12 +544,13 @@ public class ConvertUCM2JTree extends JFrame implements TreeSelectionListener {
 
 						nodeDataComponent.getInternalCouplingFirts().add(childData.getName());
 						nodeDataComponent.getInternalCouplingSecond().add(nextName);
-						nodeDataComponent.getInternalCouplingName().add(Integer.toString(index));
+						//nodeDataComponent.getInternalCouplingName().add(Integer.toString(index));
 						index++;
 					}
 				}
 
 			} else {
+				nodeDataComponent.setEnd(true);
 				nodeDataComponent.getExternalOutputCoupling().add(childData.getName());
 			}
 
@@ -567,6 +568,7 @@ public class ConvertUCM2JTree extends JFrame implements TreeSelectionListener {
 					nodeDataComponent.getExternalInputCoupling().add(childDataDNode.getName());
 				}
 			} else {
+				nodeDataComponent.setStart(true);
 				nodeDataComponent.getExternalInputCoupling().add(childData.getName());
 			}
 		}

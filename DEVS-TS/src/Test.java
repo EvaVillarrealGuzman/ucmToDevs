@@ -8,6 +8,8 @@ import Main.TransformerSimulator;
 public class Test {
 
 	public static void main(String[] args) {
+		
+		
 
 		// Create jar
 		/*try {
@@ -43,11 +45,16 @@ public class Test {
 
 		
 		  TransformerSimulator ts = new TransformerSimulator();
-		  ts.callTransformer(
-		  "C:/Users/Usuario-Pc/git/DEVS-TS/DEVS-TS/src/Test/cs-pf.jucm",
+		  
+		/*  System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/SAE.jucm"));
+		  */
+		 ts.callTransformer(
+				  "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm",
 		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
+		  
+		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);
 		 
-
+/*
 		try {
 			ArrayList<String> classNames = new ArrayList<String>();
 			ZipInputStream zip = new ZipInputStream(new FileInputStream(
@@ -67,7 +74,7 @@ public class Test {
 			}
 		} catch (Exception e) {
 
-		}
+		}*/
 
 		/*
 		 * if (ts.callSimulator(

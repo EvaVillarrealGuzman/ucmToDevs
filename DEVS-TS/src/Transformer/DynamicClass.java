@@ -15,6 +15,7 @@ import com.sun.codemodel.JMod;
 
 import Transformer.Domain.Component;
 import Transformer.Domain.Element;
+import Transformer.Domain.Relation2;
 import Transformer.Domain.Responsibility;
 import view.modeling.ViewableDigraph;
 
@@ -22,7 +23,8 @@ public class DynamicClass {
 
 	public void createSaViewDEVS(JTree xmlTree, JCodeModel codeModel) throws JClassAlreadyExistsException {
 		// Crea los puertos de todos los componentes y responsabilidades
-		Port.createPort(xmlTree);
+		Port port = new Port();
+		port.createPort(xmlTree);
 
 		// Busca la raíz del árbol que va ser la clase SaViewDEVS
 		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
@@ -67,7 +69,7 @@ public class DynamicClass {
 
 			if (nodeData instanceof Transformer.Domain.Component) {
 				Transformer.Domain.Component nodeDataComponent = (Component) nodeData;
-				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct);
+				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct, port.getRelation());
 			} else if (nodeData instanceof Transformer.Domain.Element
 					|| nodeData instanceof Transformer.Domain.Responsibility) {
 				createResponsability(node, nodeData, saViewConstruct);
@@ -75,11 +77,11 @@ public class DynamicClass {
 		}
 
 		saViewConstruct.body().directStatement("initialize();");
-		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct);
+		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct, port.getRelation());
 	}
 
 	private void createComponent(JTree xmlTree, JCodeModel codeModel, DefaultMutableTreeNode currentNode,
-			Transformer.Domain.Component currentComponent, JMethod parentMethod) throws JClassAlreadyExistsException {
+			Transformer.Domain.Component currentComponent, JMethod parentMethod, Relation2 relations) throws JClassAlreadyExistsException {
 
 		String temporalName = currentComponent.getName().replace(" ", "");
 		// Crea el nombre del objeto
@@ -135,7 +137,7 @@ public class DynamicClass {
 
 			if (nodeData instanceof Transformer.Domain.Component) {
 				Transformer.Domain.Component nodeDataComponent = (Component) nodeData;
-				createComponent(xmlTree, codeModel, node, nodeDataComponent, construct);
+				createComponent(xmlTree, codeModel, node, nodeDataComponent, construct, relations);
 			} else if (nodeData instanceof Transformer.Domain.Element
 					|| nodeData instanceof Transformer.Domain.Responsibility) {
 				createResponsability(node, nodeData, construct);
@@ -143,7 +145,7 @@ public class DynamicClass {
 		}
 
 		construct.body().directStatement("initialize();");
-		Coupling.createCoupling(xmlTree, currentComponent, currentNode, construct);
+		Coupling.createCoupling(xmlTree, currentComponent, currentNode, construct, relations);
 	}
 
 	private void createResponsability(DefaultMutableTreeNode currentNode, Transformer.Domain.Node currentDomainNode,

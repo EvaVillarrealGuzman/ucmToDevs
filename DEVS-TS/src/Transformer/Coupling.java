@@ -11,6 +11,7 @@ import Transformer.Domain.Component;
 import Transformer.Domain.Element;
 import Transformer.Domain.Node;
 import Transformer.Domain.Relation;
+import Transformer.Domain.Relation2;
 
 /**
  * Esta clase tiene la responsabilidad de crear los acoplamientos
@@ -27,11 +28,11 @@ public class Coupling {
 	 * @param method
 	 */
 	public static void createCoupling(JTree xmlTree, Component currentComponent, DefaultMutableTreeNode currentNode,
-			JMethod method) {
+			JMethod method, Relation2 relation) {
 
-		couplingInputExternal(xmlTree, currentComponent, currentNode, method);
-		couplingOuputExternal(xmlTree, currentComponent, currentNode, method);
-		couplingInternal(xmlTree, currentComponent, method);
+		couplingInputExternal(xmlTree, currentComponent, currentNode, method, relation);
+		couplingOuputExternal(xmlTree, currentComponent, currentNode, method, relation);
+		couplingInternal(xmlTree, currentComponent, method, relation);
 		experimentalFrameCoupling(xmlTree, currentComponent, method);
 
 	}
@@ -43,7 +44,8 @@ public class Coupling {
 	 * @param currentComponent
 	 * @param method
 	 */
-	private static void couplingInternal(JTree xmlTree, Component currentComponent, JMethod method) {
+	private static void couplingInternal(JTree xmlTree, Component currentComponent, JMethod method,
+			Relation2 relation) {
 
 		ArrayList<String> icf = currentComponent.getInternalCouplingFirts();
 		ArrayList<String> icn = currentComponent.getInternalCouplingName();
@@ -125,7 +127,7 @@ public class Coupling {
 	 * @param method
 	 */
 	private static void couplingOuputExternal(JTree xmlTree, Component currentComponent,
-			DefaultMutableTreeNode currentNode, JMethod method) {
+			DefaultMutableTreeNode currentNode, JMethod method, Relation2 relation2) {
 
 		ArrayList<String> eoc = currentComponent.getExternalOutputCoupling();
 
@@ -142,6 +144,7 @@ public class Coupling {
 			String objectName = (temporalName.substring(0, 1)).toLowerCase()
 					+ temporalName.substring(1, temporalName.length());
 
+			// TODO ver
 			if (dataBeforeNode instanceof Transformer.Domain.Element) {
 				Transformer.Domain.Element dataNextNodeElement = (Element) dataBeforeNode;
 				if (dataNextNodeElement.getType().equals("ucm.map:AndFork")
@@ -155,13 +158,13 @@ public class Coupling {
 							+ currentComponent.getOutputPorts().get(j) + "\");");
 				}
 			} else if (dataBeforeNode instanceof Transformer.Domain.Responsibility) {
-				method.body().directStatement("addCoupling(" + objectName + ",\"srop\",this,\""
-						+ currentComponent.getOutputPorts().get(j) + "\");");
+				method.body().directStatement("addCoupling(" + objectName + ",\"srop\",this,\"seop"
+						+ getPortByFirst(temporalName, relation2) + "\");");
 			} else if (dataBeforeNode instanceof Component) {
 				method.body()
 						.directStatement("addCoupling(" + objectName + ",\""
-								+ currentComponent.getOutputRelations()
-										.get(searchIndexOutput(currentComponent, dataBeforeNode.getName())).getPort()
+								+ dataBeforeNode.getOutputPorts()
+										.get(searchIndexOutput(currentComponent, dataBeforeNode.getName(), dataBeforeNode))
 								+ "\" ,this,\"" + currentComponent.getOutputPorts().get(j) + "\");");
 			}
 
@@ -175,6 +178,41 @@ public class Coupling {
 	}
 
 	/**
+	 * Obtiene el nombre del puerto de la responsabilidad correspondiente
+	 * 
+	 * @param responsibility
+	 * @param relation
+	 * @return
+	 */
+	public static String getPortByFirst(String responsibility, Relation2 relation) {
+		for (int j = 0; j < relation.getFirst().size(); j++) {
+			if (relation.getFirst().get(j).equals(responsibility) && (relation.getSecond().get(j) != null)) {
+				return relation.getPort().get(j);
+			}
+		}
+		return "0";
+	}
+
+	/**
+	 * Obtiene el nombre del puerto de la responsabilidad correspondiente
+	 * 
+	 * @param responsibility
+	 * @param relation
+	 * @return
+	 */
+	public static String getPortBySecond(String responsibility, Relation2 relation) {
+		for (int j = 0; j < relation.getFirst().size(); j++) {
+			String element = relation.getSecond().get(j);
+			if (element != null) {
+				if (element.equals(responsibility)) {
+					return relation.getPort().get(j);
+				}
+			}
+		}
+		return "0";
+	}
+
+	/**
 	 * crea el acoplamiento externo de entrada
 	 * 
 	 * @param xmlTree
@@ -183,7 +221,7 @@ public class Coupling {
 	 * @param method
 	 */
 	private static void couplingInputExternal(JTree xmlTree, Component currentComponent,
-			DefaultMutableTreeNode currentNode, JMethod method) {
+			DefaultMutableTreeNode currentNode, JMethod method, Relation2 relation2) {
 		ArrayList<String> eic = currentComponent.getExternalInputCoupling();
 
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
@@ -213,12 +251,13 @@ public class Coupling {
 					indexORAND++;
 				}
 			} else if (dataNextNode instanceof Transformer.Domain.Responsibility) {
-				method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j) + "\","
-						+ objectName + ",\"prip\");");
+				method.body().directStatement("addCoupling(this,\"peip" + getPortBySecond(temporalName, relation2)
+						+ "\"," + objectName + ",\"prip\");");
 			} else if (dataNextNode instanceof Component) {
+				// TODO ver en search de pasar menos parámetros
 				method.body().directStatement("addCoupling(this,\""
-						+ currentComponent.getInputPorts().get(j) + "\"," + objectName + ", \"" + currentComponent
-								.getInputRelations().get(searchIndexInput(currentComponent, objectName)).getPort()
+						+ currentComponent.getInputPorts().get(j) + "\"," + objectName + ", \"" + dataNextNode
+								.getInputPorts().get(searchIndexInput(currentComponent, temporalName, dataNextNode))
 						+ "\");");
 			}
 
@@ -304,9 +343,19 @@ public class Coupling {
 	 * @param name
 	 * @return
 	 */
-	private static int searchIndexInput(Component currentComponent, String name) {
-		for (int j = 0; j < currentComponent.getInputRelations().size(); j++) {
-			if (currentComponent.getInputRelations().get(j).getElement().equals(name)) {
+	private static int searchIndexInput(Component currentComponent, String name, Transformer.Domain.Node dataNextNode) {
+
+		for (int j = 0; j < dataNextNode.getInputPorts().size(); j++) {
+			boolean isEqual = false;
+			for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
+				System.out.println(dataNextNode.getInputPorts().get(j));
+				System.out.println("peip" + currentComponent.getInternalCouplingName().get(i));
+				if (dataNextNode.getInputPorts().get(j)
+						.equals("peip" + currentComponent.getInternalCouplingName().get(i))) {
+					isEqual = true;
+				}
+			}
+			if (!isEqual) {
 				return j;
 			}
 		}
@@ -320,9 +369,20 @@ public class Coupling {
 	 * @param name
 	 * @return
 	 */
-	private static int searchIndexOutput(Component currentComponent, String name) {
-		for (int j = 0; j < currentComponent.getOutputRelations().size(); j++) {
-			if (currentComponent.getOutputRelations().get(j).getElement().equals(name)) {
+	private static int searchIndexOutput(Component currentComponent, String name,
+			Transformer.Domain.Node dataBeforeNode) {
+
+		for (int j = 0; j < dataBeforeNode.getOutputPorts().size(); j++) {
+			boolean isEqual = false;
+			for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
+				System.out.println(dataBeforeNode.getOutputPorts().get(j));
+				System.out.println("seop" + currentComponent.getInternalCouplingName().get(i));
+				if (dataBeforeNode.getOutputPorts().get(j)
+						.equals("seop" + currentComponent.getInternalCouplingName().get(i))) {
+					isEqual = true;
+				}
+			}
+			if (!isEqual) {
 				return j;
 			}
 		}
