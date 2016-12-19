@@ -5,6 +5,12 @@ import java.util.zip.ZipInputStream;
 
 import Main.TransformerSimulator;
 
+/**
+ * Esta clase solo sirve para probar
+ * 
+ * @author Eva
+ *
+ */
 public class Test {
 
 	public static void main(String[] args) {

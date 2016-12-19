@@ -4,29 +4,29 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 public class Component extends Node {
-	
+
+	// Indica si el nodo es el primero en el camino
 	private boolean isStart;
+	// Indica si el nodo es el último en el camino
 	private boolean isEnd;
-	
+
+	// Indica cuales nodos forman parte del acoplamiento externo
 	private ArrayList<String> externalOutputCoupling;
 	private ArrayList<String> externalInputCoupling;
 
+	// Indica la relación existente entre dos elementos del camino que se
+	// encuentran conectados. Al mismo se le asigna un nombre único (un número).
 	private ArrayList<String> internalCouplingFirts;
 	private ArrayList<String> internalCouplingSecond;
 	private ArrayList<String> internalCouplingName;
 
-	private ArrayList<String> externalCouplingFirtsPort;
-	private ArrayList<String> externalCouplingSecondPort;
-	private ArrayList<String> externalCouplingResponsability;
-
-	private ArrayList<Relation> inputRelations;
-	private ArrayList<Relation> outputRelations;
+	// Indica los componentes internos del componente
 	private ArrayList<String> internalComponents;
 
 	public Component(int id, String name) {
 		super(id, name);
-		isStart=false;
-		isEnd=false;
+		isStart = false;
+		isEnd = false;
 	}
 
 	public ArrayList<String> getExternalOutputCoupling() {
@@ -84,28 +84,6 @@ public class Component extends Node {
 		this.internalComponents = internalComponents;
 	}
 
-	public ArrayList<Relation> getInputRelations() {
-		if (inputRelations == null) {
-			inputRelations = new ArrayList<Relation>();
-		}
-		return inputRelations;
-	}
-
-	public void setInputRelations(ArrayList<Relation> inputRelations) {
-		this.inputRelations = inputRelations;
-	}
-
-	public ArrayList<Relation> getOutputRelations() {
-		if (outputRelations == null) {
-			outputRelations = new ArrayList<Relation>();
-		}
-		return outputRelations;
-	}
-
-	public void setOutputRelations(ArrayList<Relation> outputRelations) {
-		this.outputRelations = outputRelations;
-	}
-
 	public ArrayList<String> getInternalCouplingName() {
 		if (internalCouplingName == null) {
 			internalCouplingName = new ArrayList<String>();
@@ -116,32 +94,6 @@ public class Component extends Node {
 	public void setInternalCouplingName(ArrayList<String> internalCouplingName) {
 		this.internalCouplingName = internalCouplingName;
 	}
-
-	public ArrayList<String> getExternalCouplingFirtsPort() {
-		return externalCouplingFirtsPort;
-	}
-
-	public void setExternalCouplingFirtsPort(ArrayList<String> externalCouplingFirtsPort) {
-		this.externalCouplingFirtsPort = externalCouplingFirtsPort;
-	}
-
-	public ArrayList<String> getExternalCouplingSecondPort() {
-		return externalCouplingSecondPort;
-	}
-
-	public void setExternalCouplingSecondPort(ArrayList<String> externalCouplingSecondPort) {
-		this.externalCouplingSecondPort = externalCouplingSecondPort;
-	}
-
-	public ArrayList<String> getExternalCouplingResponsability() {
-		return externalCouplingResponsability;
-	}
-
-	public void setExternalCouplingResponsability(ArrayList<String> externalCouplingResponsability) {
-		this.externalCouplingResponsability = externalCouplingResponsability;
-	}
-	
-	
 
 	public boolean isStart() {
 		return isStart;
@@ -160,6 +112,7 @@ public class Component extends Node {
 	}
 
 	public void createInternalComponent() {
+		// TODO se puede optimizar trabajando directamente con HashSet
 		internalComponents = new ArrayList<String>();
 
 		internalComponents.addAll(this.getExternalInputCoupling());
@@ -167,6 +120,7 @@ public class Component extends Node {
 		internalComponents.addAll(this.getInternalCouplingFirts());
 		internalComponents.addAll(this.getInternalCouplingSecond());
 
+		// Al hacer esto se elimina componentes repetidos
 		HashSet<String> hashSet = new HashSet<String>(internalComponents);
 		internalComponents.clear();
 		internalComponents.addAll(hashSet);

@@ -1,6 +1,5 @@
 package Transformer;
 
-///modifique en 3 lugares
 import java.util.ArrayList;
 
 import javax.swing.JTree;
@@ -15,18 +14,24 @@ import com.sun.codemodel.JMod;
 
 import Transformer.Domain.Component;
 import Transformer.Domain.Element;
-import Transformer.Domain.Relation2;
+import Transformer.Domain.Path;
 import Transformer.Domain.Responsibility;
 import view.modeling.ViewableDigraph;
 
+/**
+ * This class creates each .java class
+ * 
+ * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
+ *
+ */
 public class DynamicClass {
 
 	public void createSaViewDEVS(JTree xmlTree, JCodeModel codeModel) throws JClassAlreadyExistsException {
-		// Crea los puertos de todos los componentes y responsabilidades
-		Port port = new Port();
-		port.createPort(xmlTree);
+		// Creates ports for all components and responsibilities
 
-		// Busca la raíz del árbol que va ser la clase SaViewDEVS
+		Port.createPort(xmlTree);
+
+		// Find the root of the tree that will be the SaViewDEVS class
 		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
 
 		String className = "SimEnvironment.SAModel.SystemTemp.SAViewDEVS";
@@ -40,13 +45,13 @@ public class DynamicClass {
 		JClass arrayListOfDoubleClass = arrayListClass.narrow(Double.class);
 		sAViewDEVS.field(JMod.PRIVATE, arrayListOfDoubleClass, "arrayListDouble");
 
-		// Crea el constructor sin parámetros
+		// Generate constructor with parameters
 		Transformer.Domain.Component root = (Component) rootNode.getUserObject();
 		JMethod constructorWithoutParameter = sAViewDEVS.constructor(JMod.PUBLIC);
 		constructorWithoutParameter.body().directStatement("super(\"" + root.getName() + " - SA View\");");
 		constructorWithoutParameter.body().directStatement("saViewConstruct();");
 
-		// Crea el constructor sin parámetros
+		// Generate constructor without parameters
 		JMethod constructorWithParameter = sAViewDEVS.constructor(JMod.PUBLIC);
 		constructorWithParameter.param(String.class, "name");
 		constructorWithParameter.body().directStatement("super(name);");
@@ -62,32 +67,34 @@ public class DynamicClass {
 		saViewConstruct.body().directStatement("addOutport(\"rrtop\");");
 		saViewConstruct.body().directStatement("addOutport(\"rfailop\");");
 
-		// Crea la definición para cada elemento que contiene
+		// Creates the definition for each element it contains
 		for (int i = 0; i < xmlTree.getModel().getChildCount(rootNode); i++) {
 			DefaultMutableTreeNode node = ((DefaultMutableTreeNode) xmlTree.getModel().getChild(rootNode, i));
 			Transformer.Domain.Node nodeData = (Transformer.Domain.Node) node.getUserObject();
 
 			if (nodeData instanceof Transformer.Domain.Component) {
 				Transformer.Domain.Component nodeDataComponent = (Component) nodeData;
-				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct, port.getRelation());
+				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct, Port.getPath());
 			} else if (nodeData instanceof Transformer.Domain.Element
 					|| nodeData instanceof Transformer.Domain.Responsibility) {
-				createResponsability(node, nodeData, saViewConstruct);
+				createResponsability(nodeData, saViewConstruct);
 			}
 		}
 
 		saViewConstruct.body().directStatement("initialize();");
-		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct, port.getRelation());
+		// create coupling
+		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct, Port.getPath());
 	}
 
 	private void createComponent(JTree xmlTree, JCodeModel codeModel, DefaultMutableTreeNode currentNode,
-			Transformer.Domain.Component currentComponent, JMethod parentMethod, Relation2 relations) throws JClassAlreadyExistsException {
+			Transformer.Domain.Component currentComponent, JMethod parentMethod, Path path)
+			throws JClassAlreadyExistsException {
 
 		String temporalName = currentComponent.getName().replace(" ", "");
-		// Crea el nombre del objeto
+		// create object name
 		String objectName = (temporalName.substring(0, 1)).toLowerCase()
 				+ temporalName.substring(1, temporalName.length());
-		// Crea el nombre de la clase
+		// create class name
 		String className = (temporalName.substring(0, 1)).toUpperCase()
 				+ temporalName.substring(1, temporalName.length());
 
@@ -104,12 +111,12 @@ public class DynamicClass {
 		JClass arrayListOfDoubleClass = arrayListClass.narrow(Double.class);
 		newClass.field(JMod.PRIVATE, arrayListOfDoubleClass, "arrayListDouble");
 
-		// Crea el constructor sin parámetros
+		// Generate constructor with parameters
 		JMethod constructorWithoutParameter = newClass.constructor(JMod.PUBLIC);
 		constructorWithoutParameter.body().directStatement("super(\"" + currentComponent.getName() + "\");");
 		constructorWithoutParameter.body().directStatement("construct();");
 
-		// Crea el constructor con parámetros
+		// Generate constructor without parameters
 		JMethod constructorWithParameter = newClass.constructor(JMod.PUBLIC);
 		constructorWithParameter.param(String.class, "name");
 		constructorWithParameter.body().directStatement("super(name);");
@@ -130,29 +137,28 @@ public class DynamicClass {
 		construct.body().directStatement("addOutport(\"rtop\");");
 		construct.body().directStatement("addOutport(\"failop\");");
 
-		// Crea la definición para cada elemento que contiene
+		// Creates the definition for each element it contains
 		for (int i = 0; i < xmlTree.getModel().getChildCount(currentNode); i++) {
 			DefaultMutableTreeNode node = ((DefaultMutableTreeNode) xmlTree.getModel().getChild(currentNode, i));
 			Transformer.Domain.Node nodeData = (Transformer.Domain.Node) node.getUserObject();
 
 			if (nodeData instanceof Transformer.Domain.Component) {
 				Transformer.Domain.Component nodeDataComponent = (Component) nodeData;
-				createComponent(xmlTree, codeModel, node, nodeDataComponent, construct, relations);
+				createComponent(xmlTree, codeModel, node, nodeDataComponent, construct, path);
 			} else if (nodeData instanceof Transformer.Domain.Element
 					|| nodeData instanceof Transformer.Domain.Responsibility) {
-				createResponsability(node, nodeData, construct);
+				createResponsability(nodeData, construct);
 			}
 		}
 
 		construct.body().directStatement("initialize();");
-		Coupling.createCoupling(xmlTree, currentComponent, currentNode, construct, relations);
+		Coupling.createCoupling(xmlTree, currentComponent, currentNode, construct, path);
 	}
 
-	private void createResponsability(DefaultMutableTreeNode currentNode, Transformer.Domain.Node currentDomainNode,
-			JMethod parentMethod) {
+	private void createResponsability(Transformer.Domain.Node currentDomainNode, JMethod parentMethod) {
 
 		String temporalName = currentDomainNode.getName().replace(" ", "");
-		// Crea el nombre del objeto
+		// create name object
 		String objectName = (temporalName.substring(0, 1)).toLowerCase()
 				+ temporalName.substring(1, temporalName.length());
 

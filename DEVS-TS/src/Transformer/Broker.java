@@ -12,6 +12,14 @@ import com.sun.codemodel.JCodeModel;
 
 import Transformer.Domain.StartPoint;
 
+//The code is divided by functionality
+
+/**
+ * This class coordinates the transformer process
+ * 
+ * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
+ *
+ */
 public class Broker {
 	private JCodeModel codeModel;
 	private JTree xmlTree;
@@ -23,7 +31,7 @@ public class Broker {
 
 		Object[] result;
 
-		/* obtiene el objeto xml que debe crear */
+		/* Get the xml object to create */
 		ConvertUCM2JTree xmlObject = new ConvertUCM2JTree();
 		result = xmlObject.convertToTree(inputPath);
 
@@ -31,13 +39,14 @@ public class Broker {
 
 		startPoint = (StartPoint) result[1];
 
+		// Create the .java classes of the UCM model
 		DynamicClass dc = new DynamicClass();
 		dc.createSaViewDEVS(xmlTree, codeModel);
 
 		// This will generate the code in the specified file path.
 		codeModel.build(new File(outputPath + "/Simulator/src"));
 
-		// compile class created
+		// Compile class created
 		ExecuteShellComand.compileCommand(outputPath + "/Simulator/src");
 
 		// Create jar

@@ -21,6 +21,12 @@ import Transformer.Domain.Component;
 import Transformer.Domain.Responsibility;
 import Transformer.Domain.StartPoint;
 
+/**
+ * This class converts a UCM to a java tree objectF
+ * 
+ * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
+ *
+ */
 public class ConvertUCM2JTree extends JFrame implements TreeSelectionListener {
 	JTree tree;
 	Document doc;

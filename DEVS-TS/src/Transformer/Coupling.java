@@ -10,47 +10,46 @@ import com.sun.codemodel.JMethod;
 import Transformer.Domain.Component;
 import Transformer.Domain.Element;
 import Transformer.Domain.Node;
-import Transformer.Domain.Relation;
-import Transformer.Domain.Relation2;
+import Transformer.Domain.Path;
 
 /**
- * Esta clase tiene la responsabilidad de crear los acoplamientos
+ * This class has the responsibility of creating couplings
  * 
- * @author Usuario-Pc
+ * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
  *
  */
 public class Coupling {
 
 	/**
-	 * Crea el acoplamiento dentro de una clase
+	 * Create the couplings inside a class
 	 * 
 	 * @param currentComponent
 	 * @param method
 	 */
 	public static void createCoupling(JTree xmlTree, Component currentComponent, DefaultMutableTreeNode currentNode,
-			JMethod method, Relation2 relation) {
+			JMethod method, Path relation) {
 
-		couplingInputExternal(xmlTree, currentComponent, currentNode, method, relation);
-		couplingOuputExternal(xmlTree, currentComponent, currentNode, method, relation);
-		couplingInternal(xmlTree, currentComponent, method, relation);
+		couplingInputExternal(xmlTree, currentComponent, method, relation);
+		couplingOuputExternal(xmlTree, currentComponent, method, relation);
+		couplingInternal(xmlTree, currentComponent, method);
 		experimentalFrameCoupling(xmlTree, currentComponent, method);
 
 	}
 
 	/**
-	 * crea el acoplamiento interno
+	 * create internal coupling
 	 * 
 	 * @param xmlTree
 	 * @param currentComponent
 	 * @param method
 	 */
-	private static void couplingInternal(JTree xmlTree, Component currentComponent, JMethod method,
-			Relation2 relation) {
+	private static void couplingInternal(JTree xmlTree, Component currentComponent, JMethod method) {
 
 		ArrayList<String> icf = currentComponent.getInternalCouplingFirts();
 		ArrayList<String> icn = currentComponent.getInternalCouplingName();
 		ArrayList<String> ics = currentComponent.getInternalCouplingSecond();
 
+		// TODO
 		int indexORAND = 1;
 
 		for (int j = 0; j < icf.size(); j++) {
@@ -75,6 +74,7 @@ public class Coupling {
 			String nextPort = "";
 
 			if (dataBeforeNode instanceof Transformer.Domain.Element) {
+				// TODO
 				Transformer.Domain.Element dataBeforeNodeElement = (Element) dataBeforeNode;
 				if (dataBeforeNodeElement.getType().equals("ucm.map:AndFork")) {
 					beforePort = " pathout" + indexORAND;
@@ -119,15 +119,13 @@ public class Coupling {
 	}
 
 	/**
-	 * crea el acoplamiento externo de salida
+	 * create output external coupling
 	 * 
 	 * @param xmlTree
 	 * @param currentComponent
-	 * @param currentNode
 	 * @param method
 	 */
-	private static void couplingOuputExternal(JTree xmlTree, Component currentComponent,
-			DefaultMutableTreeNode currentNode, JMethod method, Relation2 relation2) {
+	private static void couplingOuputExternal(JTree xmlTree, Component currentComponent, JMethod method, Path path) {
 
 		ArrayList<String> eoc = currentComponent.getExternalOutputCoupling();
 
@@ -159,74 +157,64 @@ public class Coupling {
 				}
 			} else if (dataBeforeNode instanceof Transformer.Domain.Responsibility) {
 				method.body().directStatement("addCoupling(" + objectName + ",\"srop\",this,\"seop"
-						+ getPortByFirst(temporalName, relation2) + "\");");
+						+ getNamePortFirst(temporalName, path) + "\");");
 			} else if (dataBeforeNode instanceof Component) {
 				method.body()
 						.directStatement("addCoupling(" + objectName + ",\""
 								+ dataBeforeNode.getOutputPorts()
-										.get(searchIndexOutput(currentComponent, dataBeforeNode.getName(), dataBeforeNode))
+										.get(searchIndexOutput(currentComponent, dataBeforeNode))
 								+ "\" ,this,\"" + currentComponent.getOutputPorts().get(j) + "\");");
 			}
 
-			// le dice a su padre cuales son sus puertos
-			if (currentNode != root) {
-				Relation relation = new Relation(currentComponent.getName(), currentComponent.getOutputPorts().get(j));
-				getParent(currentNode).getOutputRelations().add(relation);
-			}
-
 		}
 	}
 
 	/**
-	 * Obtiene el nombre del puerto de la responsabilidad correspondiente
+	 * Gets the port name of the corresponding responsibility
 	 * 
 	 * @param responsibility
-	 * @param relation
+	 * @param path
 	 * @return
 	 */
-	public static String getPortByFirst(String responsibility, Relation2 relation) {
-		for (int j = 0; j < relation.getFirst().size(); j++) {
-			if (relation.getFirst().get(j).equals(responsibility) && (relation.getSecond().get(j) != null)) {
-				return relation.getPort().get(j);
+	private static String getNamePortFirst(String responsibility, Path path) {
+		for (int j = 0; j < path.getFirst().size(); j++) {
+			if ((path.getSecond().get(j) != null) && path.getFirst().get(j).equals(responsibility)) {
+				return path.getPort().get(j);
 			}
 		}
 		return "0";
 	}
 
 	/**
-	 * Obtiene el nombre del puerto de la responsabilidad correspondiente
+	 * Gets the port name of the corresponding responsibility
 	 * 
 	 * @param responsibility
-	 * @param relation
+	 * @param path
 	 * @return
 	 */
-	public static String getPortBySecond(String responsibility, Relation2 relation) {
-		for (int j = 0; j < relation.getFirst().size(); j++) {
-			String element = relation.getSecond().get(j);
-			if (element != null) {
-				if (element.equals(responsibility)) {
-					return relation.getPort().get(j);
-				}
+	private static String getNamePortSecond(String responsibility, Path path) {
+		for (int j = 0; j < path.getFirst().size(); j++) {
+			if ((path.getSecond().get(j) != null) && path.getSecond().get(j).equals(responsibility)) {
+				return path.getPort().get(j);
 			}
 		}
 		return "0";
 	}
 
 	/**
-	 * crea el acoplamiento externo de entrada
+	 * Creates the input external coupling
 	 * 
 	 * @param xmlTree
 	 * @param currentComponent
-	 * @param currentNode
 	 * @param method
 	 */
-	private static void couplingInputExternal(JTree xmlTree, Component currentComponent,
-			DefaultMutableTreeNode currentNode, JMethod method, Relation2 relation2) {
+	private static void couplingInputExternal(JTree xmlTree, Component currentComponent, JMethod method, Path path) {
 		ArrayList<String> eic = currentComponent.getExternalInputCoupling();
 
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
 
 		String temporalName;
+		// TODO
 		int indexORAND = 1;
 
 		for (int j = 0; j < eic.size(); j++) {
@@ -239,6 +227,7 @@ public class Coupling {
 					+ temporalName.substring(1, temporalName.length());
 
 			if (dataNextNode instanceof Transformer.Domain.Element) {
+				// TODO
 				Transformer.Domain.Element dataNextNodeElement = (Element) dataNextNode;
 				if (dataNextNodeElement.getType().equals("ucm.map:AndFork")
 						|| dataNextNodeElement.getType().equals("ucm.map:OrFork")) {
@@ -251,27 +240,19 @@ public class Coupling {
 					indexORAND++;
 				}
 			} else if (dataNextNode instanceof Transformer.Domain.Responsibility) {
-				method.body().directStatement("addCoupling(this,\"peip" + getPortBySecond(temporalName, relation2)
-						+ "\"," + objectName + ",\"prip\");");
+				method.body().directStatement("addCoupling(this,\"peip" + getNamePortSecond(temporalName, path) + "\","
+						+ objectName + ",\"prip\");");
 			} else if (dataNextNode instanceof Component) {
-				// TODO ver en search de pasar menos parámetros
-				method.body().directStatement("addCoupling(this,\""
-						+ currentComponent.getInputPorts().get(j) + "\"," + objectName + ", \"" + dataNextNode
-								.getInputPorts().get(searchIndexInput(currentComponent, temporalName, dataNextNode))
-						+ "\");");
-			}
-
-			// le dice a su padre cuales son sus puertos
-			if (currentNode != root) {
-				Relation relation = new Relation(currentComponent.getName(), currentComponent.getInputPorts().get(j));
-				getParent(currentNode).getInputRelations().add(relation);
+				method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j) + "\","
+						+ objectName + ", \""
+						+ dataNextNode.getInputPorts().get(searchIndexInput(currentComponent, dataNextNode)) + "\");");
 			}
 
 		}
 	}
 
 	/**
-	 * crea el acoplamiento con el marco experimental
+	 * Creates the coupling with the experimental frame
 	 * 
 	 * @param xmlTree
 	 * @param currentComponent
@@ -324,7 +305,7 @@ public class Coupling {
 	}
 
 	/**
-	 * devuelve el padre de un elemento
+	 * Returns element´s parent
 	 * 
 	 * @param currentNode
 	 * @return
@@ -337,13 +318,12 @@ public class Coupling {
 	}
 
 	/**
-	 * Devuelve el índice dentro del array de entrada que corresponde con name
+	 * Returns the index within the input array that corresponds to name
 	 * 
 	 * @param currentComponent
-	 * @param name
 	 * @return
 	 */
-	private static int searchIndexInput(Component currentComponent, String name, Transformer.Domain.Node dataNextNode) {
+	private static int searchIndexInput(Component currentComponent, Transformer.Domain.Node dataNextNode) {
 
 		for (int j = 0; j < dataNextNode.getInputPorts().size(); j++) {
 			boolean isEqual = false;
@@ -363,14 +343,12 @@ public class Coupling {
 	}
 
 	/**
-	 * Devuelve el índice dentro del array de salida que corresponde con name
+	 * Returns the index within the output array that corresponds to name
 	 * 
 	 * @param currentComponent
-	 * @param name
 	 * @return
 	 */
-	private static int searchIndexOutput(Component currentComponent, String name,
-			Transformer.Domain.Node dataBeforeNode) {
+	private static int searchIndexOutput(Component currentComponent, Transformer.Domain.Node dataBeforeNode) {
 
 		for (int j = 0; j < dataBeforeNode.getOutputPorts().size(); j++) {
 			boolean isEqual = false;
@@ -391,7 +369,7 @@ public class Coupling {
 	}
 
 	/***
-	 * Devuelve el nodo del árbol cuyo nombre se corresponde con name
+	 * Returns the node of the tree whose name matches to the name parameter
 	 * 
 	 * @param name
 	 * @return

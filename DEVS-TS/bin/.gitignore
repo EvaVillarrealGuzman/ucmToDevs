@@ -1,6 +1,7 @@
 /GenCol/
 /Main/
 /Test/
+/Test.class
 /Transformer/
 /chequerUCM/
 /controller/
@@ -10,4 +11,3 @@
 /transformersimulator/
 /util/
 /view/
-/Test.class

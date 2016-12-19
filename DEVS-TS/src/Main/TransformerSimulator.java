@@ -11,10 +11,16 @@ import com.sun.codemodel.JClassAlreadyExistsException;
 import Transformer.Broker;
 import chequerUCM.Chequer;
 
+/**
+ * This class acts as an interface
+ * 
+ * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
+ *
+ */
 public class TransformerSimulator {
 
 	private double int_arr_t;
-	private Boolean isFinished= false;
+	private Boolean isFinished = false;
 
 	public String callChequerUCM(String path) {
 		Chequer c = new Chequer(path);
@@ -36,12 +42,12 @@ public class TransformerSimulator {
 
 		try {
 
-			// Carga el jar
+			// Load the jar
 			File f = new File(simEnvironmentPath + "/simulator.jar");
 
 			URLClassLoader urlClassLoaderSM = URLClassLoader.newInstance(new URL[] { f.toURI().toURL() });
 
-			// Genera el objeto SimEnvironment
+			// Generate SimEnvironment object
 			for (int i = 1; i < 11; i++) {
 				Class classSE = Class.forName("SimEnvironment.SimEnvironment", true, urlClassLoaderSM);
 
@@ -50,10 +56,10 @@ public class TransformerSimulator {
 						simEnvironmentPath + "/Run/Run" + i };
 				Object objectSM = classSE.getConstructor(paramTypesSM).newInstance(paramValuesSM);
 
-				// Genera la clase digraph, para hacer el casteo
+				// Generate digraph class, to make the cast
 				Class classDigraph = Class.forName("model.modeling.digraph", true, urlClassLoaderSM);
 
-				// Genera el objeto DevsSuiteFacade
+				// Generate DevsSuiteFacade object
 				Class classDSF = Class.forName("DevsSuiteFacade", true, urlClassLoaderSM);
 
 				Class[] paramTypesDSF = { classDigraph };
@@ -61,16 +67,15 @@ public class TransformerSimulator {
 
 				Object objectDSF = classDSF.getConstructor(paramTypesDSF).newInstance(paramValuesDSF);
 
-				// Genera el objeto entity
+				// Generate entity object
 				Class classEntity = Class.forName("GenCol.entity", true, urlClassLoaderSM);
 
 				Class[] paramTypesEntity = { String.class };
 				Object[] paramValuesEntity = { "start" };
-				// System.out.println(classSE.cast(objectSM));
 
 				Object objectEntity = classEntity.getConstructor(paramTypesEntity).newInstance(paramValuesEntity);
 
-				// invoca métodos simulate
+				// invoke simulate methods
 
 				Class[] paramTypesM1 = { double.class, String.class, classEntity };
 				Object[] paramValuesM1 = { 0.0, "sip", classEntity.cast(objectEntity) };
@@ -86,17 +91,16 @@ public class TransformerSimulator {
 
 			}
 
-			// El código anterior intenta generar en forma dinámica lo que
-			// sigue:
+			// The code above dynamically generates the following:
 			// SimEnvironment model = new SimEnvironment("prueba");
 			// DevsSuiteFacade fachada = new DevsSuiteFacade(model);
 			// fachada.simulate(0, "sip", new entity("start"));
 			// fachada.simulate(2147483647);
 
-			//Este ciclo sirve para sincronizar con la finalización de la simulación
+			// This cycle is used to synchronize with the end of the simulation
 			while (!isFinished) {
 				File lastFile = new File(simEnvironmentPath + "/Run/Run10/reliability.csv");
-				
+
 				if (lastFile.exists())
 					isFinished = true;
 			}
@@ -108,7 +112,6 @@ public class TransformerSimulator {
 
 		}
 	}
-
 
 	public double getInt_arr_t() {
 		return int_arr_t;

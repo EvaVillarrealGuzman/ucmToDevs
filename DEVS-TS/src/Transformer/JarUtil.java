@@ -1,8 +1,5 @@
 package Transformer;
 
-       
-//package com.qlogic.commons.utils.io;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +16,8 @@ import java.util.jar.JarOutputStream;
 import java.util.zip.CRC32;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
+
+//Source: http://www.java2s.com/Code/Java/File-Input-Output/Writesallfilesofthegivendirectorytothespecifiedjarfile.htm
 
 public final class JarUtil {
 
