@@ -15,14 +15,14 @@ public class Test {
 
 	public static void main(String[] args) {
 		
-		
+
 
 		// Create jar
 		/*try {
 
 			OutputStream output = new FileOutputStream(
-					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/project.jar");
-			JarUtil.jar(new File("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/Simulator/src"),
+					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/reports.jar");
+			JarUtil.jar(new File("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/reports"),
 					output, false);
 
 		} catch (Exception e) {
@@ -52,19 +52,21 @@ public class Test {
 		
 		  TransformerSimulator ts = new TransformerSimulator();
 		  
+		  System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba21.jucm"));
+		  
 		/*  System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/SAE.jucm"));
 		  */
-		 ts.callTransformer(
+		/* ts.callTransformer(
 				  "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm",
 		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
 		  
-		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);
+		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);*/
 		 
 /*
 		try {
 			ArrayList<String> classNames = new ArrayList<String>();
 			ZipInputStream zip = new ZipInputStream(new FileInputStream(
-					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/project.jar"));
+					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/reports.jar"));
 			for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
 				if (!entry.isDirectory()) { // This ZipEntry represents a class.
 											// Now, what class does it
