@@ -52,15 +52,16 @@ public class Test {
 		
 		  TransformerSimulator ts = new TransformerSimulator();
 		  
-		  System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba21.jucm"));
+		  //System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba21.jucm"));
 		  
 		/*  System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/SAE.jucm"));
 		  */
-		/* ts.callTransformer(
-				  "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm",
+		  ///C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm"
+		 ts.callTransformer(
+				  "C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/test1.jucm",
 		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
 		  
-		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);*/
+	//	 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);
 		 
 /*
 		try {
@@ -147,3 +148,4 @@ public class Test {
 	}
 
 }
+

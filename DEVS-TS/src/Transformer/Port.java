@@ -9,12 +9,12 @@ import Transformer.Domain.Component;
 import Transformer.Domain.Path;
 import Transformer.Domain.Responsibility;
 
-//TODO mejorar separación del armado del camino con el de los puertos
+//TODO mejorar separaciÃ³n del armado del camino con el de los puertos
 
 /**
  * This class creates the ports of each element of the path, as well as the path
  * 
- * @author: María Eva Villarreal Guzmán. E-mail: villarrealguzman@gmail.com
+ * @author: MarÃ­a Eva Villarreal GuzmÃ¡n. E-mail: villarrealguzman@gmail.com
  *
  */
 public class Port {
@@ -151,11 +151,14 @@ public class Port {
 					domainNode.getInputPorts().add("prip");
 					domainNode.getOutputPorts().add("srop");
 					// Create path, assigning each relation a name
-					PATH.getFirst().add(domainNode.getName());
-					// TODO ampliar no solo a 0 para and y or
-					PATH.getSecond().add(((Transformer.Domain.Responsibility) domainNode).getSuccessor().get(0));
-					PATH.getPort().add(String.valueOf(count));
-					count++;
+					Transformer.Domain.Responsibility domainNodeResponsibility = (Transformer.Domain.Responsibility) domainNode;
+					for (int j = 0; j < domainNodeResponsibility.getSuccessor().size(); j++) {
+						PATH.getFirst().add(domainNode.getName());
+						// TODO ampliar no solo a 0 para and y or
+						PATH.getSecond().add(domainNodeResponsibility.getSuccessor().get(j));
+						PATH.getPort().add(String.valueOf(count));
+						count++;
+					}
 				}
 				// TODO hacer un if para or y and
 			}
@@ -201,19 +204,26 @@ public class Port {
 	 * @param currentComponent
 	 * @param currentNode
 	 * @param xmlTree
-	 * @param firstNode
+	 * @param firstNodeData
 	 * @param SecondNode
 	 * @return
 	 */
-	private static String getNameRelation(Component currentComponent, JTree xmlTree, DefaultMutableTreeNode firstNode,
-			String SecondNode) {
+	private static String getNameRelation(Component currentComponent, JTree xmlTree,
+			DefaultMutableTreeNode firstNodeData, String SecondNode) {
 
 		// The array will contain the responsibilities that are within inside of
 		// currentComponent
 		ArrayList<Responsibility> internalResponsibilities = new ArrayList<Responsibility>();
 
-		Component firstComponent = (Component) firstNode.getUserObject();
-		getInternalResponsibilities(firstNode, xmlTree, internalResponsibilities);
+		Transformer.Domain.Node firstNode = (Transformer.Domain.Node) firstNodeData.getUserObject();
+
+		if (firstNode instanceof Transformer.Domain.Component) {
+			Component firstComponent = (Component) firstNode;
+			getInternalResponsibilities(firstNodeData, xmlTree, internalResponsibilities);
+		} else {
+			Responsibility firstResponsibility = (Responsibility) firstNode;
+			internalResponsibilities.add(firstResponsibility);
+		}
 
 		// The process consists of finding the two responsibilities that connect
 		// the firstNode to the SecondNode, and thus return the name of the
@@ -227,15 +237,13 @@ public class Port {
 			boolean haveParent = true;
 			Responsibility responsibility = internalResponsibilities.get(i);
 			// TODO join and
-			DefaultMutableTreeNode nextNode = getDefaultMutableTreeNode(xmlTree, responsibility.getSuccessor().get(0));
-			if (nextNode != null) {
+			DefaultMutableTreeNode nextNodeData = getDefaultMutableTreeNode(xmlTree,
+					responsibility.getSuccessor().get(0));
+			if (nextNodeData != null) {
 				while (haveParent) {
-					if (nextNode.getParent() != null) {
-						// Gets the parent of the nextNode, and if it is equal
-						// to secondNode it returns the name of the relation
-						DefaultMutableTreeNode nextParent = (DefaultMutableTreeNode) nextNode.getParent();
-						Transformer.Domain.Node nextParentNode = (Transformer.Domain.Node) nextParent.getUserObject();
-						if (nextParentNode.getName().equals(SecondNode)) {
+					if (nextNodeData.getParent() != null) {
+						Transformer.Domain.Node nextNode = (Transformer.Domain.Node) nextNodeData.getUserObject();
+						if (nextNode.getName().equals(SecondNode)) {
 							for (int j = 0; j < getPath().getFirst().size(); j++) {
 								// To obtain the name it looks for a relation of
 								// the way between firstNode and secondNode, and
@@ -259,7 +267,12 @@ public class Port {
 								}
 							}
 						}
-						nextNode = nextParent;
+						// Gets the parent of the nextNode, and if it is equal
+						// to secondNode it returns the name of the relation
+						DefaultMutableTreeNode nextParent = (DefaultMutableTreeNode) nextNodeData.getParent();
+						Transformer.Domain.Node nextParentNode = (Transformer.Domain.Node) nextParent.getUserObject();
+						nextNodeData = nextParent;
+						nextNode = nextParentNode;
 					} else {
 						haveParent = false;
 					}
