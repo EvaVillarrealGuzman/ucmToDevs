@@ -4,6 +4,14 @@ import java.util.ArrayList;
 
 abstract public class Node {
 
+	
+
+	// Indica si el nodo es el primero en el camino
+	private boolean isStart;
+	// Indica si el nodo es el último en el camino
+	private boolean isEnd;
+	
+	
 	protected int id;
 	protected String name;
 	protected ArrayList<String> inputPorts;
@@ -12,6 +20,8 @@ abstract public class Node {
 	public Node(int id, String name) {
 		this.id = id;
 		this.name = name;
+		isStart = false;
+		isEnd = false;
 	}
 
 	public int getId() {
@@ -52,4 +62,19 @@ abstract public class Node {
 		this.outputPorts = outputPort;
 	}
 
+	public boolean isStart() {
+		return isStart;
+	}
+
+	public void setStart(boolean isStart) {
+		this.isStart = isStart;
+	}
+
+	public boolean isEnd() {
+		return isEnd;
+	}
+
+	public void setEnd(boolean isEnd) {
+		this.isEnd = isEnd;
+	}
 }

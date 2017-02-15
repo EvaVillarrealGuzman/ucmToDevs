@@ -5,10 +5,6 @@ import java.util.HashSet;
 
 public class Component extends Node {
 
-	// Indica si el nodo es el primero en el camino
-	private boolean isStart;
-	// Indica si el nodo es el último en el camino
-	private boolean isEnd;
 
 	// Indica cuales nodos forman parte del acoplamiento externo
 	private ArrayList<String> externalOutputCoupling;
@@ -25,8 +21,6 @@ public class Component extends Node {
 
 	public Component(int id, String name) {
 		super(id, name);
-		isStart = false;
-		isEnd = false;
 	}
 
 	public ArrayList<String> getExternalOutputCoupling() {
@@ -95,21 +89,7 @@ public class Component extends Node {
 		this.internalCouplingName = internalCouplingName;
 	}
 
-	public boolean isStart() {
-		return isStart;
-	}
 
-	public void setStart(boolean isStart) {
-		this.isStart = isStart;
-	}
-
-	public boolean isEnd() {
-		return isEnd;
-	}
-
-	public void setEnd(boolean isEnd) {
-		this.isEnd = isEnd;
-	}
 
 	public void createInternalComponent() {
 		// TODO se puede optimizar trabajando directamente con HashSet

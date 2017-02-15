@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="URNspec" author="Usuario-Pc" created="July 6, 2016 10:51:37 AM GFT" modified="August 3, 2016 10:38:27 AM GFT" specVersion="4" urnVersion="1.27" nextGlobalID="26">
+  <ucmspec>
+    <scenarioGroups name="ScenarioGroup5" id="5">
+      <scenarios name="ScenarioDef6" id="6"/>
+    </scenarioGroups>
+  </ucmspec>
+  <grlspec>
+    <groups name="StrategiesGroup3" id="3" strategies="4"/>
+    <strategies name="EvaluationStrategy4" id="4" author="Usuario-Pc" group="3"/>
+    <impactModel/>
+    <indicatorGroup name="Time" id="7" isRedesignCategory="true"/>
+    <indicatorGroup name="Cost" id="8" isRedesignCategory="true"/>
+    <indicatorGroup name="Quality" id="9" isRedesignCategory="true"/>
+    <indicatorGroup name="Flexibility" id="10" isRedesignCategory="true"/>
+    <featureModel/>
+  </grlspec>
+  <urndef>
+    <responsibilities name="Responsibility1" id="23" respRefs="24"/>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="UCMmap2" id="2">
+      <metadata name="MeanTimeBRequest" value="1"/>
+      <nodes xsi:type="ucm.map:StartPoint" name="StartPoint11" id="11" x="265" y="152" succ="//@urndef/@specDiagrams.0/@connections.0">
+        <metadata name="MeanTimeBRequest" value="1"/>
+        <label/>
+        <precondition deltaX="40" deltaY="-17" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="EndPoint13" id="13" x="609" y="152" pred="//@urndef/@specDiagrams.0/@connections.1">
+        <label/>
+        <postcondition deltaX="-40" deltaY="-20" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef24" id="24" x="436" y="149" contRef="20" succ="//@urndef/@specDiagrams.0/@connections.1" pred="//@urndef/@specDiagrams.0/@connections.0" respDef="23">
+        <label/>
+      </nodes>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef20" id="20" x="307" y="69" width="254" height="168" contDef="19" nodes="24">
+        <label/>
+      </contRefs>
+      <connections xsi:type="ucm.map:NodeConnection" source="11" target="24"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="24" target="13"/>
+      <comments description="La responsabilidad no tiene metadatas" x="683" y="80" width="100" height="100" fillColor="255,255,200"/>
+    </specDiagrams>
+    <components name="Component" id="19" contRefs="20"/>
+  </urndef>
+  <metadata name="_Use0to100EvaluationRange" value="false"/>
+</urn:URNspec>

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="URNspec" author="Eva" created="December 13, 2016 10:42:23 AM ART" modified="February 14, 2017 6:31:50 PM ART" specVersion="22" urnVersion="1.27" nextGlobalID="95">
+  <ucmspec>
+    <scenarioGroups name="ScenarioGroup5" id="5">
+      <scenarios name="ScenarioDef6" id="6"/>
+    </scenarioGroups>
+  </ucmspec>
+  <grlspec>
+    <groups name="StrategiesGroup3" id="3" strategies="4"/>
+    <strategies name="EvaluationStrategy4" id="4" author="Eva" group="3"/>
+    <impactModel/>
+    <indicatorGroup name="Time" id="7" isRedesignCategory="true"/>
+    <indicatorGroup name="Cost" id="8" isRedesignCategory="true"/>
+    <indicatorGroup name="Quality" id="9" isRedesignCategory="true"/>
+    <indicatorGroup name="Flexibility" id="10" isRedesignCategory="true"/>
+    <featureModel/>
+  </grlspec>
+  <urndef>
+    <responsibilities name="r1" id="44" respRefs="45">
+      <metadata name="MeanDowntime" value="7200000"/>
+      <metadata name="MeanExecutionTime" value="20"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="17205"/>
+    </responsibilities>
+    <responsibilities name="r2" id="48" respRefs="49">
+      <metadata name="MeanDowntime" value="7200000"/>
+      <metadata name="MeanExecutionTime" value="17"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="17205"/>
+    </responsibilities>
+    <responsibilities name="r3" id="52" respRefs="53">
+      <metadata name="MeanDowntime" value="7300000"/>
+      <metadata name="MeanExecutionTime" value="25"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="17000"/>
+    </responsibilities>
+    <responsibilities name="r4" id="56" respRefs="57">
+      <metadata name="MeanDowntime" value="900000"/>
+      <metadata name="MeanExecutionTime" value="6"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="45593.25"/>
+    </responsibilities>
+    <responsibilities name="r5" id="64" respRefs="65">
+      <metadata name="MeanDowntime" value="1000"/>
+      <metadata name="MeanExecutionTime" value="10"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="100000"/>
+    </responsibilities>
+    <responsibilities name="r6" id="68" respRefs="69">
+      <metadata name="MeanDowntime" value="7200000"/>
+      <metadata name="MeanExecutionTime" value="1554.2"/>
+      <metadata name="MeanRecoveryTime" value="600000"/>
+      <metadata name="MeanTimeBFail" value="3130158.8"/>
+    </responsibilities>
+    <responsibilities name="r7" id="72" respRefs="73">
+      <metadata name="MeanDowntime" value="86400000"/>
+      <metadata name="MeanExecutionTime" value="15000"/>
+      <metadata name="MeanRecoveryTime" value="1800000"/>
+      <metadata name="MeanTimeBFail" value="5000"/>
+    </responsibilities>
+    <responsibilities name="r8" id="76" respRefs="77">
+      <metadata name="MeanDowntime" value="86400000"/>
+      <metadata name="MeanExecutionTime" value="10000"/>
+      <metadata name="MeanRecoveryTime" value="1800000"/>
+      <metadata name="MeanTimeBFail" value="5000"/>
+    </responsibilities>
+    <responsibilities name="r9" id="84" respRefs="85">
+      <metadata name="MeanDowntime" value="7200000"/>
+      <metadata name="MeanExecutionTime" value="1560"/>
+      <metadata name="MeanRecoveryTime" value="600000"/>
+      <metadata name="MeanTimeBFail" value="3130160"/>
+    </responsibilities>
+    <responsibilities name="r10" id="88" respRefs="89">
+      <metadata name="MeanDowntime" value="18000000"/>
+      <metadata name="MeanExecutionTime" value="135.1"/>
+      <metadata name="MeanRecoveryTime" value="7200000"/>
+      <metadata name="MeanTimeBFail" value="24735.58"/>
+    </responsibilities>
+    <responsibilities name="r11" id="92" respRefs="93">
+      <metadata name="MeanDowntime" value="7200000"/>
+      <metadata name="MeanExecutionTime" value="15.9"/>
+      <metadata name="MeanRecoveryTime" value="0"/>
+      <metadata name="MeanTimeBFail" value="182373"/>
+    </responsibilities>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="UCMmap2" id="2">
+      <nodes xsi:type="ucm.map:StartPoint" name="sp" id="11" x="65" y="170" succ="//@urndef/@specDiagrams.0/@connections.0">
+        <metadata name="MeanTimeBRequest" value="216000000"/>
+        <label/>
+        <precondition deltaX="40" deltaY="-17" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="ep" id="13" x="265" y="532" pred="//@urndef/@specDiagrams.0/@connections.11">
+        <label/>
+        <postcondition deltaX="-40" deltaY="-20" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef45" id="45" x="213" y="126" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.1" pred="//@urndef/@specDiagrams.0/@connections.0" respDef="44">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef49" id="49" x="355" y="131" contRef="29" succ="//@urndef/@specDiagrams.0/@connections.2" pred="//@urndef/@specDiagrams.0/@connections.1" respDef="48">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef53" id="53" x="538" y="146" contRef="35" succ="//@urndef/@specDiagrams.0/@connections.3" pred="//@urndef/@specDiagrams.0/@connections.2" respDef="52">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef57" id="57" x="224" y="189" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.4" pred="//@urndef/@specDiagrams.0/@connections.3" respDef="56">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef65" id="65" x="233" y="277" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.5" pred="//@urndef/@specDiagrams.0/@connections.4" respDef="64">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef69" id="69" x="427" y="325" contRef="39" succ="//@urndef/@specDiagrams.0/@connections.6" pred="//@urndef/@specDiagrams.0/@connections.5" respDef="68">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef73" id="73" x="238" y="340" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.7" pred="//@urndef/@specDiagrams.0/@connections.6" respDef="72">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef77" id="77" x="378" y="381" contRef="39" succ="//@urndef/@specDiagrams.0/@connections.8" pred="//@urndef/@specDiagrams.0/@connections.7" respDef="76">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef85" id="85" x="381" y="418" contRef="39" succ="//@urndef/@specDiagrams.0/@connections.9" pred="//@urndef/@specDiagrams.0/@connections.8" respDef="84">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef89" id="89" x="229" y="397" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.10" pred="//@urndef/@specDiagrams.0/@connections.9" respDef="88">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef93" id="93" x="173" y="404" contRef="23" succ="//@urndef/@specDiagrams.0/@connections.11" pred="//@urndef/@specDiagrams.0/@connections.10" respDef="92">
+        <label/>
+      </nodes>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef19" id="19" x="111" y="33" width="508" height="461" contDef="18" children="23 29 35 39">
+        <label/>
+      </contRefs>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef23" id="23" x="125" y="66" width="161" height="364" contDef="22" nodes="45 57 65 73 89 93" parent="19">
+        <label/>
+      </contRefs>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef29" id="29" x="304" y="83" width="145" height="168" contDef="28" nodes="49" parent="19">
+        <label/>
+      </contRefs>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef35" id="35" x="472" y="99" width="134" height="107" contDef="34" nodes="53" parent="19">
+        <label/>
+      </contRefs>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef39" id="39" x="315" y="284" width="208" height="170" contDef="38" nodes="69 77 85" parent="19">
+        <label/>
+      </contRefs>
+      <connections xsi:type="ucm.map:NodeConnection" source="11" target="45"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="45" target="49"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="49" target="53"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="53" target="57"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="57" target="65"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="65" target="69"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="69" target="73"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="73" target="77"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="77" target="85"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="85" target="89"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="89" target="93"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="93" target="13"/>
+    </specDiagrams>
+    <components name="SAE" id="18" contRefs="19"/>
+    <components name="GUISoftwareArchitectureEvaluation" id="22" contRefs="23"/>
+    <components name="Analysis" id="28" contRefs="29"/>
+    <components name="SoftwareArchitectureSpecification" id="34" contRefs="35"/>
+    <components name="DEVSTS" id="38" contRefs="39"/>
+  </urndef>
+  <metadata name="_Use0to100EvaluationRange" value="false"/>
+</urn:URNspec>

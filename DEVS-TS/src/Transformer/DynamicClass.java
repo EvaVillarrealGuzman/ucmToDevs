@@ -14,7 +14,6 @@ import com.sun.codemodel.JMod;
 
 import Transformer.Domain.Component;
 import Transformer.Domain.Element;
-import Transformer.Domain.Path;
 import Transformer.Domain.Responsibility;
 import view.modeling.ViewableDigraph;
 
@@ -29,7 +28,11 @@ public class DynamicClass {
 	public void createSaViewDEVS(JTree xmlTree, JCodeModel codeModel) throws JClassAlreadyExistsException {
 		// Creates ports for all components and responsibilities
 
-		Port.createPort(xmlTree);
+		// Create path
+		Path path = new Path();
+		path.createPath(xmlTree);
+
+		Port.createPort(xmlTree, path);
 
 		// Find the root of the tree that will be the SaViewDEVS class
 		DefaultMutableTreeNode rootNode = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
@@ -74,7 +77,7 @@ public class DynamicClass {
 
 			if (nodeData instanceof Transformer.Domain.Component) {
 				Transformer.Domain.Component nodeDataComponent = (Component) nodeData;
-				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct, Port.getPath());
+				createComponent(xmlTree, codeModel, node, nodeDataComponent, saViewConstruct, Port.PATH);
 			} else if (nodeData instanceof Transformer.Domain.Element
 					|| nodeData instanceof Transformer.Domain.Responsibility) {
 				createResponsability(nodeData, saViewConstruct);
@@ -83,7 +86,7 @@ public class DynamicClass {
 
 		saViewConstruct.body().directStatement("initialize();");
 		// create coupling
-		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct, Port.getPath());
+		Coupling.createCoupling(xmlTree, root, rootNode, saViewConstruct, Port.PATH);
 	}
 
 	private void createComponent(JTree xmlTree, JCodeModel codeModel, DefaultMutableTreeNode currentNode,

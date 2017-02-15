@@ -54,14 +54,15 @@ public class Test {
 		  
 		  //System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba21.jucm"));
 		  
-		/*  System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/SAE.jucm"));
-		  */
+		// System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm"));
+		  
 		  ///C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm"
-		 ts.callTransformer(
-				  "C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/test1.jucm",
+		  //C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm
+		 ts.callTransformer("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/Ejemplo.jucm",
 		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
 		  
-	//	 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2000);
+		 
+		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 216000001);
 		 
 /*
 		try {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<urn:URNspec xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ucm.map="http:///ucm/map.ecore" xmlns:urn="http:///urn.ecore" name="URNspec" author="Usuario-Pc" created="August 2, 2016 3:12:41 PM GFT" modified="September 12, 2016 4:00:57 PM ART" specVersion="4" urnVersion="1.27" nextGlobalID="103">
+  <ucmspec>
+    <scenarioGroups name="ScenarioGroup5" id="5">
+      <scenarios name="ScenarioDef6" id="6"/>
+    </scenarioGroups>
+  </ucmspec>
+  <grlspec>
+    <groups name="StrategiesGroup3" id="3" strategies="4"/>
+    <strategies name="EvaluationStrategy4" id="4" author="Usuario-Pc" group="3"/>
+    <impactModel/>
+    <indicatorGroup name="Time" id="7" isRedesignCategory="true"/>
+    <indicatorGroup name="Cost" id="8" isRedesignCategory="true"/>
+    <indicatorGroup name="Quality" id="9" isRedesignCategory="true"/>
+    <indicatorGroup name="Flexibility" id="10" isRedesignCategory="true"/>
+    <featureModel/>
+  </grlspec>
+  <urndef>
+    <responsibilities name="Responsibility94" id="94" respRefs="95">
+      <metadata name="MeanDowntime" value="0.5"/>
+      <metadata name="MeanExecutionTime" value="0.5"/>
+      <metadata name="MeanRecoveryTime" value="0.5"/>
+      <metadata name="MeanTimeBFail" value="0.5"/>
+    </responsibilities>
+    <responsibilities name="Responsibility98" id="98" respRefs="99">
+      <metadata name="MeanDowntime" value="0.5"/>
+      <metadata name="MeanExecutionTime" value="0.5"/>
+      <metadata name="MeanRecoveryTime" value="0.5"/>
+      <metadata name="MeanTimeBFail" value="0.5"/>
+    </responsibilities>
+    <responsibilities name="Responsibility100" id="100" respRefs="101">
+      <metadata name="MeanDowntime" value="0.5"/>
+      <metadata name="MeanExecutionTime" value="0.5"/>
+      <metadata name="MeanRecoveryTime" value="0.5"/>
+      <metadata name="MeanTimeBFail" value="0.5"/>
+    </responsibilities>
+    <specDiagrams xsi:type="ucm.map:UCMmap" name="UCMmap2" id="2">
+      <nodes xsi:type="ucm.map:StartPoint" name="StartPoint11" id="11" x="255" y="152" succ="//@urndef/@specDiagrams.0/@connections.0">
+        <metadata name="MeanTimeBRequest" value="102"/>
+        <label/>
+        <precondition deltaX="40" deltaY="-17" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:EndPoint" name="EndPoint13" id="13" x="752" y="155" pred="//@urndef/@specDiagrams.0/@connections.1">
+        <label/>
+        <postcondition deltaX="-40" deltaY="-20" label="" expression="true"/>
+      </nodes>
+      <nodes xsi:type="ucm.map:AndJoin" name="AndJoin50" id="50" x="612" y="183" contRef="17" succ="//@urndef/@specDiagrams.0/@connections.1" pred="//@urndef/@specDiagrams.0/@connections.5 //@urndef/@specDiagrams.0/@connections.4"/>
+      <nodes xsi:type="ucm.map:AndFork" name="AndFork22" id="22" x="394" y="197" contRef="17" succ="//@urndef/@specDiagrams.0/@connections.3 //@urndef/@specDiagrams.0/@connections.2" pred="//@urndef/@specDiagrams.0/@connections.6"/>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef95" id="95" x="508" y="138" contRef="91" succ="//@urndef/@specDiagrams.0/@connections.4" pred="//@urndef/@specDiagrams.0/@connections.2" respDef="94">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef99" id="99" x="501" y="188" contRef="17" succ="//@urndef/@specDiagrams.0/@connections.5" pred="//@urndef/@specDiagrams.0/@connections.3" respDef="98">
+        <label/>
+      </nodes>
+      <nodes xsi:type="ucm.map:RespRef" name="RespRef101" id="101" x="352" y="184" contRef="17" succ="//@urndef/@specDiagrams.0/@connections.6" pred="//@urndef/@specDiagrams.0/@connections.0" respDef="100">
+        <label/>
+      </nodes>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef17" id="17" x="319" y="96" width="334" height="195" contDef="16" nodes="50 22 99 101" children="91">
+        <label/>
+      </contRefs>
+      <contRefs xsi:type="ucm.map:ComponentRef" name="ComponentRef91" id="91" x="446" y="116" width="92" height="44" contDef="90" nodes="95" parent="17">
+        <label/>
+      </contRefs>
+      <connections xsi:type="ucm.map:NodeConnection" source="11" target="101"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="50" target="13"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="22" target="95"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="22" target="99"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="95" target="50"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="99" target="50"/>
+      <connections xsi:type="ucm.map:NodeConnection" source="101" target="22"/>
+    </specDiagrams>
+    <components name="MainComponent" id="16" contRefs="17"/>
+    <components name="TwoComponent" id="90" contRefs="91"/>
+  </urndef>
+  <metadata name="_Use0to100EvaluationRange" value="false"/>
+</urn:URNspec>

@@ -10,7 +10,6 @@ import com.sun.codemodel.JMethod;
 import Transformer.Domain.Component;
 import Transformer.Domain.Element;
 import Transformer.Domain.Node;
-import Transformer.Domain.Path;
 
 /**
  * This class has the responsibility of creating couplings
@@ -49,9 +48,6 @@ public class Coupling {
 		ArrayList<String> icn = currentComponent.getInternalCouplingName();
 		ArrayList<String> ics = currentComponent.getInternalCouplingSecond();
 
-		// TODO
-		int indexORAND = 1;
-
 		for (int j = 0; j < icf.size(); j++) {
 
 			DefaultMutableTreeNode nextNode = getDefaultMutableTreeNode(xmlTree, ics.get(j));
@@ -73,42 +69,15 @@ public class Coupling {
 			String beforePort = "";
 			String nextPort = "";
 
-			if (dataBeforeNode instanceof Transformer.Domain.Element) {
-				// TODO
-				Transformer.Domain.Element dataBeforeNodeElement = (Element) dataBeforeNode;
-				if (dataBeforeNodeElement.getType().equals("ucm.map:AndFork")) {
-					beforePort = " pathout" + indexORAND;
-					indexORAND++;
-				} else if (dataBeforeNodeElement.getType().equals("ucm.map:AndJoin")) {
-					beforePort = " pathout";
-				} else if (dataBeforeNodeElement.getType().equals("ucm.map:OrJoin")) {
-					beforePort = " pathout";
-				} else if (dataBeforeNodeElement.getType().equals("ucm.map:OrFork")) {
-					beforePort = " pathout" + indexORAND;
-					indexORAND++;
-				}
-			} else if (dataBeforeNode instanceof Transformer.Domain.Responsibility) {
+			if (dataBeforeNode instanceof Transformer.Domain.Responsibility) {
 				beforePort = "\"srop\"";
-			} else if (dataBeforeNode instanceof Component) {
+			} else {
 				beforePort = "\"seop" + icn.get(j) + "\"";
 			}
 
-			if (dataNextNode instanceof Transformer.Domain.Element) {
-				Transformer.Domain.Element dataNextNodeElement = (Element) dataNextNode;
-				if (dataNextNodeElement.getType().equals("ucm.map:AndFork")) {
-					nextPort = " pathin";
-				} else if (dataNextNodeElement.getType().equals("ucm.map:AndJoin")) {
-					nextPort = " pathin" + indexORAND;
-					indexORAND++;
-				} else if (dataNextNodeElement.getType().equals("ucm.map:OrJoin")) {
-					nextPort = " pathin" + indexORAND;
-					indexORAND++;
-				} else if (dataNextNodeElement.getType().equals("ucm.map:OrFork")) {
-					nextPort = " pathin";
-				}
-			} else if (dataNextNode instanceof Transformer.Domain.Responsibility) {
+			if (dataNextNode instanceof Transformer.Domain.Responsibility) {
 				nextPort = "\"prip\"";
-			} else if (dataNextNode instanceof Component) {
+			} else {
 				nextPort = "\"peip" + icn.get(j) + "\"";
 			}
 
@@ -129,8 +98,6 @@ public class Coupling {
 
 		ArrayList<String> eoc = currentComponent.getExternalOutputCoupling();
 
-		int indexORAND = 1;
-
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
 
 		for (int j = 0; j < eoc.size(); j++) {
@@ -142,63 +109,14 @@ public class Coupling {
 			String objectName = (temporalName.substring(0, 1)).toLowerCase()
 					+ temporalName.substring(1, temporalName.length());
 
-			// TODO ver
-			if (dataBeforeNode instanceof Transformer.Domain.Element) {
-				Transformer.Domain.Element dataNextNodeElement = (Element) dataBeforeNode;
-				if (dataNextNodeElement.getType().equals("ucm.map:AndFork")
-						|| dataNextNodeElement.getType().equals("ucm.map:OrFork")) {
-					method.body().directStatement("addCoupling(" + objectName + ",\"pathout" + indexORAND + "\",this,\""
-							+ currentComponent.getOutputPorts().get(j) + "\");");
-					indexORAND++;
-				} else if (dataNextNodeElement.getType().equals("ucm.map:AndJoin")
-						|| dataNextNodeElement.getType().equals("ucm.map:OrJoin")) {
-					method.body().directStatement("addCoupling(" + objectName + ",\"pathout\",this,\""
-							+ currentComponent.getOutputPorts().get(j) + "\");");
-				}
-			} else if (dataBeforeNode instanceof Transformer.Domain.Responsibility) {
-				method.body().directStatement("addCoupling(" + objectName + ",\"srop\",this,\"seop"
-						+ getNamePortFirst(temporalName, path) + "\");");
-			} else if (dataBeforeNode instanceof Component) {
-				method.body()
-						.directStatement("addCoupling(" + objectName + ",\""
-								+ dataBeforeNode.getOutputPorts()
-										.get(searchIndexOutput(currentComponent, dataBeforeNode))
-								+ "\" ,this,\"" + currentComponent.getOutputPorts().get(j) + "\");");
-			}
+			method.body()
+					.directStatement("addCoupling(" + objectName + ",\""
+							+ dataBeforeNode.getOutputPorts()
+									.get(searchIndexOutput(currentComponent, dataBeforeNode,
+											currentComponent.getOutputPorts().get(j)))
+							+ "\" ,this,\"" + currentComponent.getOutputPorts().get(j) + "\");");
 
 		}
-	}
-
-	/**
-	 * Gets the port name of the corresponding responsibility
-	 * 
-	 * @param responsibility
-	 * @param path
-	 * @return
-	 */
-	private static String getNamePortFirst(String responsibility, Path path) {
-		for (int j = 0; j < path.getFirst().size(); j++) {
-			if ((path.getSecond().get(j) != null) && path.getFirst().get(j).equals(responsibility)) {
-				return path.getPort().get(j);
-			}
-		}
-		return "0";
-	}
-
-	/**
-	 * Gets the port name of the corresponding responsibility
-	 * 
-	 * @param responsibility
-	 * @param path
-	 * @return
-	 */
-	private static String getNamePortSecond(String responsibility, Path path) {
-		for (int j = 0; j < path.getFirst().size(); j++) {
-			if ((path.getSecond().get(j) != null) && path.getSecond().get(j).equals(responsibility)) {
-				return path.getPort().get(j);
-			}
-		}
-		return "0";
 	}
 
 	/**
@@ -214,8 +132,6 @@ public class Coupling {
 		DefaultMutableTreeNode root = (DefaultMutableTreeNode) xmlTree.getModel().getRoot();
 
 		String temporalName;
-		// TODO
-		int indexORAND = 1;
 
 		for (int j = 0; j < eic.size(); j++) {
 			DefaultMutableTreeNode nextNode = getDefaultMutableTreeNode(xmlTree, eic.get(j));
@@ -226,28 +142,10 @@ public class Coupling {
 			String objectName = (temporalName.substring(0, 1)).toLowerCase()
 					+ temporalName.substring(1, temporalName.length());
 
-			if (dataNextNode instanceof Transformer.Domain.Element) {
-				// TODO
-				Transformer.Domain.Element dataNextNodeElement = (Element) dataNextNode;
-				if (dataNextNodeElement.getType().equals("ucm.map:AndFork")
-						|| dataNextNodeElement.getType().equals("ucm.map:OrFork")) {
-					method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j)
-							+ "\"," + objectName + ",\"pathin\");");
-				} else if (dataNextNodeElement.getType().equals("ucm.map:AndJoin")
-						|| dataNextNodeElement.getType().equals("ucm.map:OrJoin")) {
-					method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j)
-							+ "\"," + objectName + ",\"pathin" + indexORAND + "\");");
-					indexORAND++;
-				}
-			} else if (dataNextNode instanceof Transformer.Domain.Responsibility) {
-				method.body().directStatement("addCoupling(this,\"peip" + getNamePortSecond(temporalName, path) + "\","
-						+ objectName + ",\"prip\");");
-			} else if (dataNextNode instanceof Component) {
-				method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j) + "\","
-						+ objectName + ", \""
-						+ dataNextNode.getInputPorts().get(searchIndexInput(currentComponent, dataNextNode)) + "\");");
-			}
-
+			String namePort = dataNextNode.getInputPorts()
+					.get(searchIndexInput(currentComponent, dataNextNode, currentComponent.getInputPorts().get(j)));
+			method.body().directStatement("addCoupling(this,\"" + currentComponent.getInputPorts().get(j) + "\","
+					+ objectName + ", \"" + namePort + "\");");
 		}
 	}
 
@@ -289,7 +187,7 @@ public class Coupling {
 						&& !dataNodeElement.getType().equals("ucm.map:AndJoin")
 						&& !dataNodeElement.getType().equals("ucm.map:OrFork")
 						&& !dataNodeElement.getType().equals("ucm.map:OrJoin")) {
-
+					// TODO va acoplamiento para elementos?
 					method.body().directStatement("addCoupling(" + objectName + ",\"taop\",this," + taop);
 					method.body().directStatement("addCoupling(" + objectName + ",\"dtop\",this," + dtop);
 					method.body().directStatement("addCoupling(" + objectName + ",\"rtop\",this," + rtop);
@@ -305,39 +203,49 @@ public class Coupling {
 	}
 
 	/**
-	 * Returns element´s parent
-	 * 
-	 * @param currentNode
-	 * @return
-	 */
-	private static Component getParent(DefaultMutableTreeNode currentNode) {
-
-		DefaultMutableTreeNode parent = (DefaultMutableTreeNode) currentNode.getParent();
-		return (Component) parent.getUserObject();
-
-	}
-
-	/**
 	 * Returns the index within the input array that corresponds to name
 	 * 
 	 * @param currentComponent
 	 * @return
 	 */
-	private static int searchIndexInput(Component currentComponent, Transformer.Domain.Node dataNextNode) {
-
-		for (int j = 0; j < dataNextNode.getInputPorts().size(); j++) {
-			boolean isEqual = false;
-			for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
-				System.out.println(dataNextNode.getInputPorts().get(j));
-				System.out.println("peip" + currentComponent.getInternalCouplingName().get(i));
-				if (dataNextNode.getInputPorts().get(j)
-						.equals("peip" + currentComponent.getInternalCouplingName().get(i))) {
-					isEqual = true;
+	private static int searchIndexInput(Component currentComponent, Transformer.Domain.Node dataNextNode,
+			String portNamecurrentComponent) {
+		if (dataNextNode instanceof Component) {
+			for (int j = 0; j < dataNextNode.getInputPorts().size(); j++) {
+				boolean isEqual = false;
+				for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
+					if (dataNextNode.getInputPorts().get(j)
+							.equals("peip" + currentComponent.getInternalCouplingName().get(i))) {
+						isEqual = true;
+					}
+				}
+				if (!isEqual) {
+					return j;
 				}
 			}
-			if (!isEqual) {
-				return j;
+		} else if (dataNextNode instanceof Element) {
+			int indexCC = -1; // indica desde donde se corta la cadena para
+								// current
+			// component
+			if (portNamecurrentComponent.indexOf("peip") != -1) {
+				indexCC = 4;
 			}
+			for (int i = 0; i < dataNextNode.getInputPorts().size(); i++) {
+				int indexNN = -1; // indica desde donde se corta la cadena para
+									// next node
+				String namePortNextNode = dataNextNode.getInputPorts().get(i);
+				if (namePortNextNode.indexOf("peip") != -1) {
+					indexNN = 4;
+				}
+				if (indexNN != -1 && indexCC != -1) {
+					String numperPortNextNode = namePortNextNode.substring(indexNN, namePortNextNode.length());
+					String numperComponent = portNamecurrentComponent.substring(indexCC, namePortNextNode.length());
+					if (numperPortNextNode.equals(numperComponent)) {
+						return i;
+					}
+				}
+			}
+
 		}
 		return 0;
 	}
@@ -348,23 +256,45 @@ public class Coupling {
 	 * @param currentComponent
 	 * @return
 	 */
-	private static int searchIndexOutput(Component currentComponent, Transformer.Domain.Node dataBeforeNode) {
+	private static int searchIndexOutput(Component currentComponent, Transformer.Domain.Node dataBeforeNode,
+			String portNamecurrentComponent) {
 
-		for (int j = 0; j < dataBeforeNode.getOutputPorts().size(); j++) {
-			boolean isEqual = false;
-			for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
-				System.out.println(dataBeforeNode.getOutputPorts().get(j));
-				System.out.println("seop" + currentComponent.getInternalCouplingName().get(i));
-				if (dataBeforeNode.getOutputPorts().get(j)
-						.equals("seop" + currentComponent.getInternalCouplingName().get(i))) {
-					isEqual = true;
+		if (dataBeforeNode instanceof Component) {
+			for (int j = 0; j < dataBeforeNode.getOutputPorts().size(); j++) {
+				boolean isEqual = false;
+				for (int i = 0; i < currentComponent.getInternalCouplingName().size(); i++) {
+					if (dataBeforeNode.getOutputPorts().get(j)
+							.equals("seop" + currentComponent.getInternalCouplingName().get(i))) {
+						isEqual = true;
+					}
+				}
+				if (!isEqual) {
+					return j;
 				}
 			}
-			if (!isEqual) {
-				return j;
+		} else if (dataBeforeNode instanceof Element) {
+			int indexCC = -1; // indica desde donde se corta la cadena para
+			// current
+			// component
+			if (portNamecurrentComponent.indexOf("seop") != -1) {
+				indexCC = 4;
+			}
+			for (int i = 0; i < dataBeforeNode.getOutputPorts().size(); i++) {
+				int indexNN = -1; // indica desde donde se corta la cadena para
+				// next node
+				String namePortBeforeNode = dataBeforeNode.getOutputPorts().get(i);
+				if (namePortBeforeNode.indexOf("seop") != -1) {
+					indexNN = 4;
+				}
+				if (indexNN != -1 && indexCC != -1) {
+					String numperPortBeforeNode = namePortBeforeNode.substring(indexNN, namePortBeforeNode.length());
+					String numperComponent = portNamecurrentComponent.substring(indexCC, namePortBeforeNode.length());
+					if (numperPortBeforeNode.equals(numperComponent)) {
+						return i;
+					}
+				}
 			}
 		}
-
 		return 0;
 	}
 
