@@ -101,15 +101,25 @@ public class TransformerSimulator {
 
 			// This cycle is used to synchronize with the end of the simulation
 			while (!isFinished) {
-				File lastFile = new File(simEnvironmentPath + "/Run/Run10/reliability.csv");
+				File file1 = new File(simEnvironmentPath + "/Run/Run1/reliability.csv");
+				File file2 = new File(simEnvironmentPath + "/Run/Run2/reliability.csv");
+				File file3 = new File(simEnvironmentPath + "/Run/Run3/reliability.csv");
+				File file4 = new File(simEnvironmentPath + "/Run/Run4/reliability.csv");
+				File file5 = new File(simEnvironmentPath + "/Run/Run5/reliability.csv");
+				File file6 = new File(simEnvironmentPath + "/Run/Run6/reliability.csv");
+				File file7 = new File(simEnvironmentPath + "/Run/Run7/reliability.csv");
+				File file8 = new File(simEnvironmentPath + "/Run/Run8/reliability.csv");
+				File file9 = new File(simEnvironmentPath + "/Run/Run9/reliability.csv");
+				File file10 = new File(simEnvironmentPath + "/Run/Run10/reliability.csv");
 
-				if (lastFile.exists())
+				if (file1.exists() && file2.exists() && file3.exists() && file4.exists() && file5.exists()
+						&& file6.exists() && file7.exists() && file8.exists() && file9.exists() && file10.exists())
 					isFinished = true;
 			}
 
 			return true;
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 			return false;
 
 		}
@@ -117,6 +127,7 @@ public class TransformerSimulator {
 
 	public double getInt_arr_t() {
 		return int_arr_t;
+		//return 21600;
 	}
 
 	public void setInt_arr_t(double int_arr_t) {

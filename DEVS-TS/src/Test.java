@@ -1,8 +1,3 @@
-import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
 import Main.TransformerSimulator;
 
 /**
@@ -21,8 +16,8 @@ public class Test {
 		/*try {
 
 			OutputStream output = new FileOutputStream(
-					"C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/reports.jar");
-			JarUtil.jar(new File("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS/reports"),
+					"C:/Users/Usuario-Pc/Desktop/eclipse/project.jar");
+			JarUtil.jar(new File("C:/Users/Usuario-Pc/Documents/Prueba/eclipse-modeling-mars-2-win32-x86_64/eclipse/workspace/Simulator"),
 					output, false);
 
 		} catch (Exception e) {
@@ -58,11 +53,11 @@ public class Test {
 		  
 		  ///C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm"
 		  //C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm
-		 ts.callTransformer("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/Ejemplo.jucm",
-		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");
-		  
+		  //C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/Ejemplo.jucm
+		/* ts.callTransformer("C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm",
+		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");*/
 		 
-		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 216000001);
+		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2592000);
 		 
 /*
 		try {
