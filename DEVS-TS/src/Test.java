@@ -1,3 +1,9 @@
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
+
+import com.sun.management.ThreadMXBean;
+
 import Main.TransformerSimulator;
 
 /**
@@ -44,22 +50,22 @@ public class Test {
 		 * is.close(); } } catch (IOException e) { System.out.println(e); }
 		 */
 
-		
+
 		  TransformerSimulator ts = new TransformerSimulator();
 		  
-		  //System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba21.jucm"));
+		  //System.out.print("aaa" + ts.callChequerUCM("C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/chequerUCMTest/UCM/prueba211.jucm"));
 		  
 		// System.out.println(ts.callChequerUCM( "C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm"));
 		  
 		  ///C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/Ejemplo.jucm"
 		  //C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm
 		  //C:/Users/Usuario-Pc/git/devs-ts/DEVS-TS/src/Test/Ejemplo.jucm
-		/* ts.callTransformer("C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pf.jucm",
-		  "C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS");*/
-		 
-		 ts.callSimulator("C:/Users/Usuario-Pc/Desktop/eclipse mars/eclipse/plugins/UCM2DEVS", 2592000);
-		 
-/*
+		  System.out.println(ts.callTransformer("C:/Users/Usuario-Pc/Documents/Prueba/workspace nuevo/Hola/src/cs-pfs.jucm",
+		  "C:/Users/Usuario-Pc/Documents/Prueba/eclipse-modeling-mars-2-win32-x86_64/eclipse/plugins/SAE"));
+		 ts.setInt_arr_t(28800);
+		/* ts.callSimulator("C:/Users/Usuario-Pc/Documents/Prueba/eclipse-modeling-mars-2-win32-x86_64/eclipse/plugins/SAE", 3147483.647);
+		 */
+/**
 		try {
 			ArrayList<String> classNames = new ArrayList<String>();
 			ZipInputStream zip = new ZipInputStream(new FileInputStream(

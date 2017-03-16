@@ -1,6 +1,8 @@
 package Transformer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -11,11 +13,13 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import Transformer.Domain.Component;
 import Transformer.Domain.Responsibility;
@@ -35,64 +39,59 @@ public class ConvertUCM2JTree extends JFrame implements TreeSelectionListener {
 	StartPoint startPoint;
 	int index;
 
-	public Object[] convertToTree(String path) {
-		try {
-			// lee el archivo xml que se convertirá en árbol
-			File fXmlFile = new File(path);
+	public Object[] convertToTree(String path)
+			throws ParserConfigurationException, SAXException, IOException, FileNotFoundException {
 
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			doc = dBuilder.parse(fXmlFile);
-			doc.getDocumentElement().normalize();
+		// lee el archivo xml que se convertirá en árbol
+		File fXmlFile = new File(path);
 
-			// busca una lista de los elementos con el tag correspondiente
-			NodeList contRefsList = doc.getElementsByTagName("contRefs");
-			Transformer.Domain.Component rootNode = null;
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+		doc = dBuilder.parse(fXmlFile);
+		doc.getDocumentElement().normalize();
 
-			// busca el padre del árbol que se creará
-			for (int i = 0; i < contRefsList.getLength(); i++) {
-				Node contRef = contRefsList.item(i);
-				if (contRef.getNodeType() == Node.ELEMENT_NODE) {
-					Element eContRef = (Element) contRef;
-					String parent = eContRef.getAttribute("parent");
-					if (parent.equals("")) {
-						String id = eContRef.getAttribute("id");
-						rootNode = new Transformer.Domain.Component(Integer.parseInt(id),
-								this.translateNameComponent(id));
-					}
+		// busca una lista de los elementos con el tag correspondiente
+		NodeList contRefsList = doc.getElementsByTagName("contRefs");
+		Transformer.Domain.Component rootNode = null;
+
+		// busca el padre del árbol que se creará
+		for (int i = 0; i < contRefsList.getLength(); i++) {
+			Node contRef = contRefsList.item(i);
+			if (contRef.getNodeType() == Node.ELEMENT_NODE) {
+				Element eContRef = (Element) contRef;
+				String parent = eContRef.getAttribute("parent");
+				if (parent.equals("")) {
+					String id = eContRef.getAttribute("id");
+					rootNode = new Transformer.Domain.Component(Integer.parseInt(id), this.translateNameComponent(id));
 				}
 			}
-
-			DefaultMutableTreeNode parentN = new DefaultMutableTreeNode(rootNode);
-
-			// Definimos el modelo donde se agregaran los nodos
-			model = new DefaultTreeModel(parentN);
-
-			// agregamos el modelo al arbol, donde previamente establecimos la
-			// raiz
-			tree = new JTree(model);
-
-			// definimos los eventos
-			tree.getSelectionModel().addTreeSelectionListener(this);
-
-			// Cada Padre crea a su hijo, recursivamente
-			creationComponent(parentN);
-
-			createPredecessorSuccessor();
-
-			creationStartPoint();
-
-			result = new Object[2];
-
-			result[0] = tree;
-			result[1] = startPoint;
-
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 
-		return result;
+		DefaultMutableTreeNode parentN = new DefaultMutableTreeNode(rootNode);
 
+		// Definimos el modelo donde se agregaran los nodos
+		model = new DefaultTreeModel(parentN);
+
+		// agregamos el modelo al arbol, donde previamente establecimos la
+		// raiz
+		tree = new JTree(model);
+
+		// definimos los eventos
+		tree.getSelectionModel().addTreeSelectionListener(this);
+
+		// Cada Padre crea a su hijo, recursivamente
+		creationComponent(parentN);
+
+		createPredecessorSuccessor();
+
+		creationStartPoint();
+
+		result = new Object[2];
+
+		result[0] = tree;
+		result[1] = startPoint;
+
+		return result;
 	}
 
 	/**
@@ -550,7 +549,7 @@ public class ConvertUCM2JTree extends JFrame implements TreeSelectionListener {
 
 						nodeDataComponent.getInternalCouplingFirts().add(childData.getName());
 						nodeDataComponent.getInternalCouplingSecond().add(nextName);
-						//nodeDataComponent.getInternalCouplingName().add(Integer.toString(index));
+						// nodeDataComponent.getInternalCouplingName().add(Integer.toString(index));
 						index++;
 					}
 				}

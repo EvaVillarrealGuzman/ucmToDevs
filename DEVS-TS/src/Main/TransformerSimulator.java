@@ -1,12 +1,15 @@
 package Main;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
 
@@ -29,14 +32,16 @@ public class TransformerSimulator {
 		return c.isValid();
 	}
 
-	public Boolean callTransformer(String inputPath, String outputPath) {
+	public String callTransformer(String inputPath, String outputPath) {
 		Broker broker = new Broker();
 		try {
 			broker.generateSource(inputPath, outputPath);
 			this.setInt_arr_t(broker.getStartPoint().getMeanTimeBRequest());
-			return true;
-		} catch (JClassAlreadyExistsException | IOException e) {
-			return false;
+			return "";
+		} catch (FileNotFoundException e) {
+			return "FileNotFoundException";
+		} catch (JClassAlreadyExistsException | IOException | ParserConfigurationException | SAXException e) {
+			return e.toString();
 		}
 	}
 
@@ -127,7 +132,6 @@ public class TransformerSimulator {
 
 	public double getInt_arr_t() {
 		return int_arr_t;
-		//return 21600;
 	}
 
 	public void setInt_arr_t(double int_arr_t) {

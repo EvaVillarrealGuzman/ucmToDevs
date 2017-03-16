@@ -1,11 +1,15 @@
 package Transformer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.swing.JTree;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
 
 import com.sun.codemodel.JClassAlreadyExistsException;
 import com.sun.codemodel.JCodeModel;
@@ -25,7 +29,7 @@ public class Broker {
 	private JTree xmlTree;
 	private StartPoint startPoint;
 
-	public void generateSource(String inputPath, String outputPath) throws JClassAlreadyExistsException, IOException {
+	public void generateSource(String inputPath, String outputPath) throws JClassAlreadyExistsException, IOException, ParserConfigurationException, SAXException, FileNotFoundException {
 		// Instantiate an instance of the JCodeModel class
 		codeModel = new JCodeModel();
 

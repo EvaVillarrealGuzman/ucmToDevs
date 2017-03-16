@@ -1,14 +1,18 @@
 package chequerUCM;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -71,8 +75,10 @@ public class Chequer {
 
 			return message;
 
-		} catch (Exception e) {
-			return "Error";
+		} catch (FileNotFoundException e) {
+			return "File "+ path + " not found";
+		}catch (SAXException | IOException | ParserConfigurationException  e) {
+			return e.toString();
 		}
 
 	}
